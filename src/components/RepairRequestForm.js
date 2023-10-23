@@ -1,10 +1,11 @@
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { useEffect, useState } from "react"
 import { updateNewRepairToDatabase } from "../services/AllServices";
+import { useNavigate } from "react-router-dom";
 
 
 
-//straigten drop off date and select services.
+
 //clear form after hitting submit?
 //your request has been submitted after hitting button
 //render services into any additional details?
@@ -14,13 +15,20 @@ import { updateNewRepairToDatabase } from "../services/AllServices";
 
 
 
-export const RepairRequestForm = () => {
+export const RepairRequestForm = ({ currentUser }) => {
+
+
+    const navigate = useNavigate()
+
+
+
     const [isServiceSelected, setIsServiceSelected] = useState(false)
     const [services, setServices] = useState([])
     const [selectedServiceDescription, setSelectedServiceDescription] = useState([])
     const [chosenService, setChosenService] = useState("")
 
     const [newOrder, setNewOrder] = useState({
+
         name: "",
         email: "",
         phoneNumber: "",
@@ -30,9 +38,8 @@ export const RepairRequestForm = () => {
         isRushed: false,
         additionalDetails: "",
         isCompleted: false,
-        customerId: null,
-        userId: null,
-        availableServicesId: null
+        userId: currentUser.id
+
     })
 
     useEffect(() => {
@@ -41,29 +48,44 @@ export const RepairRequestForm = () => {
         })
     }, [])
 
+    useEffect(() => {
+        setNewOrder((blankObj) => ({
+            ...blankObj,
+            userId: currentUser.id,
+        }))
+    }, [currentUser])
+
 
 
     const handleServiceChange = (event) => {
-        const selectedServiceId = parseInt(event.target.value)
+        const selectedServiceId = parseInt(event.target.value);
         if (selectedServiceId !== "0") {
-            const selectedService = services?.find((service) => service?.id === selectedServiceId)
+            const selectedService = services?.find((service) => service?.id === selectedServiceId);
 
             if (selectedService) {
-                setSelectedServiceDescription(selectedService.description) // Set the selected service's description
-                setIsServiceSelected(true)
+                // Add the selected service's name to newOrder.services
+                const updatedServices = [...newOrder.services, selectedService.service_name];
+                setNewOrder({ ...newOrder, services: updatedServices });
 
+                setSelectedServiceDescription(selectedService.description);
+                setIsServiceSelected(true);
             } else {
-                setSelectedServiceDescription("")
-                setIsServiceSelected(false); // No service selected
+                setSelectedServiceDescription("");
+                setIsServiceSelected(false);
             }
-            setChosenService(selectedService)
+            setChosenService(selectedService);
         }
-    }
+    };
+
 
     const handleSaveRepairToDatabase = (event) => {
         event.preventDefault()
         updateNewRepairToDatabase(newOrder)
+        navigate(`/repairrequest/${currentUser.id}`)
+
     }
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center">
@@ -139,12 +161,14 @@ export const RepairRequestForm = () => {
                             placeholder="mm/dd/yy"
                             onChange={(event) => {
                                 const copy = { ...newOrder }
-                                copy.dropoffDate = event.target.value
-                                setNewOrder(copy)
+                                const date = new Date(event.target.value);
+                                const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+                                copy.dropoffDate = formattedDate;
+                                setNewOrder(copy);
                             }}
                         />
                         <div>
-                            <label className="text-gray-700 text-sm ml-2">$75 fee for under 2 day turnaroud.</label>
+                            <label className="block text-gray-700 text-sm ml-2">$75 fee for under 2 day turnaroud.</label>
                         </div>
                         <input
                             className="form-checkbox h-5 w-5 text-green-600 ml-2"
@@ -182,10 +206,10 @@ export const RepairRequestForm = () => {
                                         className="bg-slate-500 hover-bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                                         onClick={(event) => {
                                             event.preventDefault()
-                                            if (chosenService) {
-                                                const updatedServices = [...newOrder.services, selectedServiceDescription]
-                                                setNewOrder({ ...newOrder, services: updatedServices })
-                                            }
+                                            // if (chosenService) {
+                                            //     const updatedServices = [...newOrder.services, services.service_name]
+                                            //     setNewOrder({ ...newOrder, services: updatedServices })
+                                            // }
                                             setSelectedServiceDescription("")
                                             setIsServiceSelected(false)
                                         }}
