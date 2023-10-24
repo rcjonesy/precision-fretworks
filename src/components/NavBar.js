@@ -11,41 +11,32 @@ export const NavBar = () => {
   };
 
   return (
-    <nav className= "bg-gray-500/50 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-2xl font-bold">
-          My App
-        </Link>
-        <ul className="flex space-x-4">
+    <nav className="bg-black p-4">
+      <div className=" mx-auto flex  items-center">
+        <div>
+          <Link to="/" className="text-white text-2xl font-bold ml-5">
+            Precision Fretworks
+          </Link>
+        </div>
+        <div className="ml-auto flex">
+        <ul className="flex justify-center space-x-4">
           <li>
-            <Link to="/allposts" className="text-white hover:text-gray-400">
-              Posts
+            <Link to="/repairrequest" className="text-white hover:text-gray-400">
+              View all Repairs
             </Link>
           </li>
           <li>
-            <Link to="/newpost" className="text-white hover:text-gray-400">
-              New Post
+            <Link to="/repairrequestform" className="text-white hover:text-gray-400 ml-10 mr-5 ">
+              New Repair
             </Link>
           </li>
-          <li>
-            <Link to="/myposts" className="text-white hover:text-gray-400">
-              My Posts
-            </Link>
-          </li>
-          <li>
-            <Link to="/myfavorites" className="text-white hover:text-gray-400">
-              My Favorites
-            </Link>
-          </li>
-          {/* Add more navigation links here if needed */}
         </ul>
-        <button
-          onClick={handleLogout}
-          className="text-white hover:text-gray-400"
-        >
-          Logout
-        </button>
+        
+          <button onClick={handleLogout} className="text-white hover:text-gray-400 mr-5 ml-10">
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
-  );
-};
+  )
+}

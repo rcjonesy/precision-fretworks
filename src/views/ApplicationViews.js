@@ -5,6 +5,8 @@ import { RepairRequestForm } from "../components/RepairRequestForm"
 import { Welcome } from "../components/Welcome"
 import { NavBar } from "../components/NavBar"
 import { AllRequestList } from "../components/AllRequestList"
+import { MakeChanges } from "../components/MakeChanges"
+import { EmployeePage } from "../components/EmployeePage"
 
 
 
@@ -25,24 +27,37 @@ export const ApplicationViews = () => {
                 path="/"
                 element={
                     <>
-                        < Welcome />
+                        < NavBar />
+                        {/* outlet */}
+                        < Outlet />
 
                     </>
-
                 }>
+                {/* index welcome */}
+
+                <Route
+                    index
+                    element={<Welcome />}>
+                </Route>
 
 
 
+            <Route path="repairrequestform" element={<RepairRequestForm currentUser={currentUser} />}></Route>
+            {/* closing route */}
 
-
-
-            </Route>
-
+            {/* opening route */}
             <Route path="repairrequest">
-                <Route index element={<RepairRequestForm currentUser={currentUser} />} ></Route>
-                <Route path=":userId" element={<AllRequestList currentUser={currentUser} />} ></Route>
+                <Route index element={<AllRequestList currentUser={currentUser} />}></Route>
+                <Route path=":repairId" element={<MakeChanges currentUser={currentUser} />}></Route>
             </Route>
-        </Routes>
+
+            <Route path="employees" element={<EmployeePage currentUser={currentUser}/>}></Route>
+            </Route>
+
+            {/* opening route */}
+
+
+        </Routes >
     )
 
 }

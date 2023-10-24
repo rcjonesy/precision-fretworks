@@ -1,46 +1,55 @@
+import { useParams } from "react-router-dom";
+import { getRepairById } from "../services/AllServices";
+import { useEffect, useState } from "react";
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
-import { useEffect, useState } from "react"
-import { updateNewRepairToDatabase } from "../services/AllServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import { editedRepairToDatabase } from "../services/AllServices";
 
 
+export const MakeChanges = ({ currentUser }) => {
 
-
-//clear form after hitting submit?
-//your request has been submitted after hitting button
-//render services into any additional details?
-//stretch goal (search bar for guitars)
-
-
-
-
-
-export const RepairRequestForm = ({ currentUser }) => {
-
-
-    const navigate = useNavigate()
-
-
-
+    const { repairId } = useParams()
+    
+    const [repair, setRepair] = useState([])
     const [isServiceSelected, setIsServiceSelected] = useState(false)
     const [services, setServices] = useState([])
     const [selectedServiceDescription, setSelectedServiceDescription] = useState([])
     const [chosenService, setChosenService] = useState("")
+    const navigate = useNavigate()
 
-    const [newOrder, setNewOrder] = useState({
-
+    const [changedOrder, setChangedOrder] = useState({
         name: "",
         email: "",
         phoneNumber: "",
         guitarType: "",
         services: [],
         dropoffDate: "",
-        isRushed: false,
+        isRushed: "",
         additionalDetails: "",
-        isCompleted: false,
-        userId: currentUser.id
-
+        isCompleted: "",
+        userId: currentUser.id,
     })
+
+    useEffect(() => {
+        getRepairById(repairId).then((postArray) => {
+            setRepair(postArray);
+
+            // Now that repair data is available, set changedOrder
+            setChangedOrder({
+                id: repairId,
+                name: postArray.name,
+                email: postArray.email,
+                phoneNumber: postArray.phoneNumber,
+                guitarType: postArray.guitarType,
+                services: [],
+                dropoffDate: postArray.dropoffDate,
+                isRushed: postArray.isRushed,
+                additionalDetails: postArray.additionalDetails,
+                isCompleted: postArray.isCompleted,
+                userId: currentUser.id,
+            });
+        });
+    }, [repairId, currentUser.id])
 
     useEffect(() => {
         fetchAllServicesFromDatabase().then((servicesArray) => {
@@ -48,42 +57,37 @@ export const RepairRequestForm = ({ currentUser }) => {
         })
     }, [])
 
-    useEffect(() => {
-        setNewOrder((blankObj) => ({
-            ...blankObj,
-            userId: currentUser.id,
-        }))
-    }, [currentUser])
-
-
-
     const handleServiceChange = (event) => {
         const selectedServiceId = parseInt(event.target.value);
         if (selectedServiceId !== "0") {
-            const selectedService = services?.find((service) => service?.id === selectedServiceId);
+            const selectedService = services?.find((service) => service?.id === selectedServiceId)
 
             if (selectedService) {
-                // Add the selected service's name to newOrder.services
-                const updatedServices = [...newOrder.services, selectedService.service_name];
-                setNewOrder({ ...newOrder, services: updatedServices });
+                // Add the selected service's name to makeChanges.services
+                const updatedServices = [...changedOrder.services, selectedService.service_name]
+                setChangedOrder({ ...changedOrder, services: updatedServices })
 
-                setSelectedServiceDescription(selectedService.description);
-                setIsServiceSelected(true);
+                setSelectedServiceDescription(selectedService.description)
+                setIsServiceSelected(true)
             } else {
-                setSelectedServiceDescription("");
-                setIsServiceSelected(false);
+                setSelectedServiceDescription("")
+                setIsServiceSelected(false)
             }
-            setChosenService(selectedService);
+            setChosenService(selectedService)
         }
-    };
-
-
-    const handleSaveRepairToDatabase = (event) => {
-        event.preventDefault()
-        updateNewRepairToDatabase(newOrder)
-        navigate(`/repairrequest/`)
-
     }
+
+
+
+    const handleEditRepairToDatabase = (event) => {
+        console.log(changedOrder)
+        event.preventDefault()
+        editedRepairToDatabase(changedOrder).then(() => {
+            navigate("/repairrequest")
+        })
+        
+    }
+
 
 
 
@@ -97,10 +101,11 @@ export const RepairRequestForm = ({ currentUser }) => {
                         required
                         type="text"
                         placeholder="Full Name"
+                        value={changedOrder.name}
                         onChange={(event) => {
-                            const copy = { ...newOrder }
+                            const copy = { ...changedOrder }
                             copy.name = event.target.value;
-                            setNewOrder(copy);
+                            setChangedOrder(copy)
                         }}
                     />
                 </div>
@@ -112,10 +117,11 @@ export const RepairRequestForm = ({ currentUser }) => {
                         required
                         type="text"
                         placeholder="Email"
+                        value={changedOrder.email}
                         onChange={(event) => {
-                            const copy = { ...newOrder }
+                            const copy = { ...changedOrder }
                             copy.email = event.target.value;
-                            setNewOrder(copy);
+                            setChangedOrder(copy)
                         }}
                     />
                 </div>
@@ -127,10 +133,11 @@ export const RepairRequestForm = ({ currentUser }) => {
                         required
                         type="text"
                         placeholder="Phone Number"
+                        value={changedOrder.phoneNumber}
                         onChange={(event) => {
-                            const copy = { ...newOrder }
+                            const copy = { ...changedOrder }
                             copy.phoneNumber = event.target.value;
-                            setNewOrder(copy);
+                            setChangedOrder(copy)
                         }}
                     />
                 </div>
@@ -142,10 +149,11 @@ export const RepairRequestForm = ({ currentUser }) => {
                         required
                         type="text"
                         placeholder="Select Guitar Type"
+                        value={changedOrder.guitarType}
                         onChange={(event) => {
-                            const copy = { ...newOrder }
+                            const copy = { ...changedOrder }
                             copy.guitarType = event.target.value
-                            setNewOrder(copy);
+                            setChangedOrder(copy)
                         }}
                     />
                 </div>
@@ -160,11 +168,11 @@ export const RepairRequestForm = ({ currentUser }) => {
                             type="date"
                             placeholder="mm/dd/yy"
                             onChange={(event) => {
-                                const copy = { ...newOrder }
-                                const date = new Date(event.target.value);
+                                const copy = { ...changedOrder }
+                                const date = new Date(event.target.value)
                                 const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-                                copy.dropoffDate = formattedDate;
-                                setNewOrder(copy);
+                                copy.dropoffDate = formattedDate
+                                setChangedOrder(copy)
                             }}
                         />
                         <div>
@@ -175,7 +183,7 @@ export const RepairRequestForm = ({ currentUser }) => {
 
                             type="checkbox"
                             onChange={(event) => {
-                                setNewOrder({ ...newOrder, isRushed: !newOrder.isRushed })
+                                setChangedOrder({ ...changedOrder, isRushed: !changedOrder.isRushed })
                             }}
                         />
                     </div>
@@ -207,14 +215,15 @@ export const RepairRequestForm = ({ currentUser }) => {
                                         onClick={(event) => {
                                             event.preventDefault()
                                             // if (chosenService) {
-                                            //     const updatedServices = [...newOrder.services, services.service_name]
-                                            //     setNewOrder({ ...newOrder, services: updatedServices })
+                                            //     const updatedServices = [...changedOrder.services, services.service_name]
+                                            //     setchangedOrder({ ...changedOrder, services: updatedServices })
                                             // }
                                             setSelectedServiceDescription("")
                                             setIsServiceSelected(false)
+                                            changedOrder.services = []
                                         }}
                                     >
-                                        Add Service
+                                        Remove Service
                                     </button>
                                 </div>
                             )}
@@ -229,21 +238,25 @@ export const RepairRequestForm = ({ currentUser }) => {
 
                         placeholder="Any additional details"
                         onChange={(event) => {
-                            const copy = { ...newOrder };
+                            const copy = { ...changedOrder }
                             copy.additionalDetails = event.target.value;
-                            setNewOrder(copy);
+                            setChangedOrder(copy);
                         }}
                     ></textarea>
                 </div>
 
                 <div className="mb-6">
                     <button className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
-                        onClick={handleSaveRepairToDatabase}>
-                        Submit Repair Request
+                        onClick={handleEditRepairToDatabase}>
+                        Submit Updated Repair Request
                     </button>
                 </div>
             </form>
         </div>
 
     )
-};
+    
+}
+
+
+

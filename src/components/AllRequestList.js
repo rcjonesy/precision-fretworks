@@ -1,20 +1,21 @@
-import { useParams } from "react-router-dom"
+
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { deleteFromDatabase } from "../services/AllServices"
 import { fetchAllRepairs } from "../services/AllServices"
 import { useEffect, useState } from "react"
-
+import { useNavigate } from "react-router-dom"
 
 
 
 
 export const AllRequestList = ({ currentUser }) => {
 
-  const { userId } = useParams()
+ 
   const [services, setAllServices] = useState([])
   const [repairs, setAllRepairs] = useState([])
   const [filteredRepairs, setFilteredRepairs] = useState([])
 
+  const navigate =  useNavigate()
 
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export const AllRequestList = ({ currentUser }) => {
 
   useEffect(() => {
     fetchAllRepairs().then((repairsArray) => {
-      setAllRepairs(repairsArray);
+      setAllRepairs(repairsArray)
     })
   }, [])
 
@@ -100,8 +101,9 @@ export const AllRequestList = ({ currentUser }) => {
           <div>Price: ${totalPrice} </div>
           {repair.isRushed ? <div className="text-red-600">+$75 rush fee</div> : null}
           {repair.isRushed ? <div>Total Price = ${totalPrice + 75}</div> : null}
+          <div>Completed:</div>
           <div className="mt-5">
-            <button className="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Make Changes</button>
+            <button className="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`)}}>Make Changes</button>
             <button className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
           </div>
         </div>

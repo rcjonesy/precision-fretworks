@@ -22,3 +22,24 @@ export const deleteFromDatabase = (id) => {
     method: "DELETE"
   })
 }
+
+export const getRepairById = (id) => {
+  return fetch(`http://localhost:8088/repairs/${id}`).then((response) => response.json())
+}
+
+
+export const editedRepairToDatabase = (repair) => {
+  console.log(repair.id)
+  return fetch(`http://localhost:8088/repairs/${repair.id}`, {
+      method: "PUT", // Use "PUT" for updating data
+      headers: {
+          "Content-Type": "application/json", // Fixed the header key
+      },
+      body: JSON.stringify(repair)
+  });
+}
+
+export const fetchUsersById = (id) => {
+  return fetch (`http://localhost:8088/users/${id}`).then((response) => response.json())
+}
+

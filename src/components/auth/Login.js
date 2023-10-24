@@ -3,32 +3,41 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserByEmail } from "../../services/userService";
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const navigate = useNavigate()
 
   const handleLogin = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     return getUserByEmail(email).then((foundUsers) => {
       if (foundUsers.length === 1) {
         const user = foundUsers[0];
-        localStorage.setItem(
-          "learning_user",
-          JSON.stringify({
-            id: user.id,
-          })
-        );
-
-        navigate("/repairrequest");
+        if (user.isStaff) {
+          localStorage.setItem(
+            "learning_user",
+            JSON.stringify({
+              id: user.id,
+            })
+          );
+          navigate("/employees"); // Navigate to the employees page for staff
+        } else {
+          localStorage.setItem(
+            "learning_user",
+            JSON.stringify({
+              id: user.id,
+            })
+          )
+          navigate("/repairrequestform"); // Navigate to a different page for non-staff (e.g., customers)
+        }
       } else {
         window.alert("Invalid login");
       }
-    });
-  };
+    })
+  }
 
   return (
-    <main className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <form className="bg-white p-10 rounded-lg shadow-md w-96" onSubmit={handleLogin}>
+    <main className="bg-black min-h-screen flex items-center justify-center">
+      <form className="bg-slate-100 p-10 rounded-lg shadow-md w-96" onSubmit={handleLogin}>
         <h1 className="text-4xl font-bold mb-6">Precision Fretworks</h1>
         <h2 className="text-2xl mb-6">Please sign in</h2>
         <div className="mb-6">
@@ -48,7 +57,7 @@ export const Login = () => {
             className="w-full bg-blue-500 text-white p-3 rounded-md text-xl hover:bg-blue-600"
           >
             <Link to="/repairrequest">
-            Sign in
+              Sign in
             </Link>
           </button>
         </div>
