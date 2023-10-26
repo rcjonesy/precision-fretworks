@@ -27,9 +27,13 @@ export const getRepairById = (id) => {
   return fetch(`http://localhost:8088/repairs/${id}`).then((response) => response.json())
 }
 
+// this is an expanded version of the previous one
+export const getExpandedRepairById = (id) => {
+  return fetch(`http://localhost:8088/repairs/${id}?_expand=service`).then((response) => response.json())
+}
 
 export const editedRepairToDatabase = (repair) => {
-  console.log(repair.id)
+  
   return fetch(`http://localhost:8088/repairs/${repair.id}`, {
       method: "PUT", // Use "PUT" for updating data
       headers: {
@@ -41,5 +45,10 @@ export const editedRepairToDatabase = (repair) => {
 
 export const fetchUsersById = (id) => {
   return fetch (`http://localhost:8088/users/${id}`).then((response) => response.json())
+}
+
+//delete this if it doenst work
+export const fetchAllRepairsServices = () => {
+  return fetch("http://localhost:8088/repairs?_expand=service").then((response) => response.json())
 }
 

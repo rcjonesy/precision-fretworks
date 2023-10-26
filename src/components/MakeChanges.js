@@ -1,55 +1,68 @@
 import { useParams } from "react-router-dom";
-import { getRepairById } from "../services/AllServices";
+import { getRepairById, getExpandedRepairById } from "../services/AllServices";
 import { useEffect, useState } from "react";
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { useNavigate } from "react-router-dom"
 import { editedRepairToDatabase } from "../services/AllServices";
 
 
+
+
 export const MakeChanges = ({ currentUser }) => {
 
     const { repairId } = useParams()
-    
+    // this is my SINGLE REPAIR by ID
     const [repair, setRepair] = useState([])
     const [isServiceSelected, setIsServiceSelected] = useState(false)
+    
     const [services, setServices] = useState([])
-    const [selectedServiceDescription, setSelectedServiceDescription] = useState([])
+    // const [selectedServiceDescription, setSelectedServiceDescription] = useState([])
     const [chosenService, setChosenService] = useState("")
-    const navigate = useNavigate()
+    // const [isRushedChecked, setIsRushedChecked] = useState(false);
+    // const [selectedServiceId, setSelectedServiceId] = useState("0")
+   
 
+    const navigate = useNavigate()
+    // this is my CHANGES
     const [changedOrder, setChangedOrder] = useState({
         name: "",
         email: "",
         phoneNumber: "",
         guitarType: "",
-        services: [],
+        serviceId: "",
         dropoffDate: "",
         isRushed: "",
         additionalDetails: "",
-        isCompleted: "",
+        isCompleted: false,
         userId: currentUser.id,
     })
 
     useEffect(() => {
-        getRepairById(repairId).then((postArray) => {
-            setRepair(postArray);
-
-            // Now that repair data is available, set changedOrder
-            setChangedOrder({
-                id: repairId,
-                name: postArray.name,
-                email: postArray.email,
-                phoneNumber: postArray.phoneNumber,
-                guitarType: postArray.guitarType,
-                services: [],
-                dropoffDate: postArray.dropoffDate,
-                isRushed: postArray.isRushed,
-                additionalDetails: postArray.additionalDetails,
-                isCompleted: postArray.isCompleted,
-                userId: currentUser.id,
-            });
-        });
+        getExpandedRepairById(repairId).then((data) => {
+            setChangedOrder(data)
+            setChosenService(data.service)
+        })
     }, [repairId, currentUser.id])
+
+    // useEffect(() => {
+    //     getRepairById(repairId).then((postArray) => {
+    //         setRepair(postArray);
+    //         // Now that repair data is available, set changedOrder
+    //         setChangedOrder({
+    //             id: repairId,
+    //             name: postArray.name,
+    //             email: postArray.email,
+    //             phoneNumber: postArray.phoneNumber,
+    //             guitarType: postArray.guitarType,
+    //             servicesId: "",
+    //             dropoffDate: postArray.dropoffDate,
+    //             isRushed: postArray.isRushed,
+    //             additionalDetails: postArray.additionalDetails,
+    //             isCompleted: postArray.isCompleted,
+    //             userId: currentUser.id,
+    //         })
+    //     })
+    // }, [repairId, currentUser.id])
 
     useEffect(() => {
         fetchAllServicesFromDatabase().then((servicesArray) => {
@@ -57,26 +70,41 @@ export const MakeChanges = ({ currentUser }) => {
         })
     }, [])
 
+    // useEffect(() => {
+    //     setIsRushedChecked(changedOrder.isRushed);
+    // }, [changedOrder.isRushed])
+
+    useEffect(() => {
+        setIsServiceSelected(repair.services)
+    }, [repair, services])
+
     const handleServiceChange = (event) => {
         const selectedServiceId = parseInt(event.target.value);
-        if (selectedServiceId !== "0") {
-            const selectedService = services?.find((service) => service?.id === selectedServiceId)
+        const copy = {...changedOrder}
+        copy.serviceId = selectedServiceId
+        setChangedOrder(copy)
+        const findService = services.find((service) => {
+            return service.id === selectedServiceId
+        })
+        setChosenService(findService)
+        // if (selectedServiceId !== "0") {
+        //     const selectedService = services?.find((service) => service?.id === selectedServiceId)
 
-            if (selectedService) {
-                // Add the selected service's name to makeChanges.services
-                const updatedServices = [...changedOrder.services, selectedService.service_name]
-                setChangedOrder({ ...changedOrder, services: updatedServices })
+        //     if (selectedService) {
+        //         // Add the selected service's name to makeChanges.services
+        //         const updatedServices = [...changedOrder.services, selectedService.service_name]
+        //         setChangedOrder({ ...changedOrder, services: updatedServices })
 
-                setSelectedServiceDescription(selectedService.description)
-                setIsServiceSelected(true)
-            } else {
-                setSelectedServiceDescription("")
-                setIsServiceSelected(false)
-            }
-            setChosenService(selectedService)
-        }
+        //         setSelectedServiceDescription(selectedService.description)
+        //         setIsServiceSelected(true)
+        //     } else {
+        //         setSelectedServiceDescription("")
+        //         setIsServiceSelected(false)
+        //     }
+        //     setChosenService(selectedService)
+        // }
     }
-
+   
 
 
     const handleEditRepairToDatabase = (event) => {
@@ -88,8 +116,13 @@ export const MakeChanges = ({ currentUser }) => {
         
     }
 
-
-
+    const handleRemoveService = (event) => {
+        event.preventDefault()
+        const copy = { ...changedOrder }
+        copy.serviceId = ""
+        setChangedOrder(copy)
+        setChosenService("")
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center">
@@ -166,12 +199,13 @@ export const MakeChanges = ({ currentUser }) => {
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required
                             type="date"
+                            value={changedOrder.dropoffDate}
                             placeholder="mm/dd/yy"
                             onChange={(event) => {
                                 const copy = { ...changedOrder }
-                                const date = new Date(event.target.value)
-                                const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-                                copy.dropoffDate = formattedDate
+                                // const date = new Date(event.target.value)
+                                // const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+                                copy.dropoffDate = event.target.value
                                 setChangedOrder(copy)
                             }}
                         />
@@ -180,11 +214,12 @@ export const MakeChanges = ({ currentUser }) => {
                         </div>
                         <input
                             className="form-checkbox h-5 w-5 text-green-600 ml-2"
-
+                            
                             type="checkbox"
                             onChange={(event) => {
                                 setChangedOrder({ ...changedOrder, isRushed: !changedOrder.isRushed })
                             }}
+                            checked={changedOrder.isRushed}
                         />
                     </div>
                 </div>
@@ -194,9 +229,8 @@ export const MakeChanges = ({ currentUser }) => {
                         <label className="block text-gray-700 text-sm font-bold mb-2">Select services:</label>
                         <select
                             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            onChange={handleServiceChange}
-                        >
-                            <option value="0">Choose a service</option>
+                            onChange={handleServiceChange}>
+                            <option value={changedOrder.serviceId}>{changedOrder?.service?.service_name} -$ {changedOrder?.service?.fee}</option>
                             {services?.map((service) => (
                                 <option key={service.id} value={service.id}>
                                     {service?.service_name} - ${service?.fee}
@@ -205,42 +239,55 @@ export const MakeChanges = ({ currentUser }) => {
                         </select>
                     </div>
 
+                   
+                              
+                                
+
+
                     <div className="w-1/2 pl-2">
                         <ul>
-                            <li className="mb-6 text-left">{selectedServiceDescription}</li>
-                            {isServiceSelected && (
+                        {changedOrder?.serviceId && (
+                                <li>
+                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button onClick={handleRemoveService}>🗑️</button></span></p>
+                                </li>
+                            )}
+                            {/* <li className="mb-6 text-left">{selectedServiceDescription}</li> */}
+
+                            {/* {isServiceSelected && (
                                 <div>
-                                    <button
+                                    {changedOrder.services?.map((service) => { return <li key={service}><div>{service}</div> <button
                                         className="bg-slate-500 hover-bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                                         onClick={(event) => {
                                             event.preventDefault()
-                                            // if (chosenService) {
-                                            //     const updatedServices = [...changedOrder.services, services.service_name]
-                                            //     setchangedOrder({ ...changedOrder, services: updatedServices })
-                                            // }
-                                            setSelectedServiceDescription("")
+                                            // setSelectedServiceDescription("")
                                             setIsServiceSelected(false)
-                                            changedOrder.services = []
+                                            changedOrder.services.pop()
+                                            // setSelectedServiceId("0")
+                                            
+                                            
                                         }}
                                     >
-                                        Remove Service
-                                    </button>
+                                        🗑️
+                                    </button> </li>})}  
+                                  
                                 </div>
-                            )}
+                            )} */}
                         </ul>
                     </div>
                 </div>
+
 
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Any Additional Details:</label> */}
                     <textarea
                         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"
-
+                        value={changedOrder.additionalDetails}               
                         placeholder="Any additional details"
                         onChange={(event) => {
                             const copy = { ...changedOrder }
                             copy.additionalDetails = event.target.value;
-                            setChangedOrder(copy);
+                            
+                            setChangedOrder(copy)
                         }}
                     ></textarea>
                 </div>

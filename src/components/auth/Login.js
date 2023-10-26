@@ -9,7 +9,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault()
 
-    return getUserByEmail(email).then((foundUsers) => {
+     getUserByEmail(email).then((foundUsers) => {
       if (foundUsers.length === 1) {
         const user = foundUsers[0];
         if (user.isStaff) {
@@ -53,12 +53,13 @@ export const Login = () => {
         </div>
         <div className="mb-6">
           <button
+            // onClick={handleLogin}
             type="submit"
             className="w-full bg-blue-500 text-white p-3 rounded-md text-xl hover:bg-blue-600"
           >
-            <Link to="/repairrequest">
+            
               Sign in
-            </Link>
+            
           </button>
         </div>
         <div className="mt-6 text-center">
