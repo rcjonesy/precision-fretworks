@@ -10,7 +10,14 @@ body {
   height: 100vh; 
 }
 
+.trash {
+  color: rgb(221, 38, 38);
+}
 
+.trash:hover {
+  color: black;
+  transition: .5s;
+}
 
 /* body {
   margin: 0;

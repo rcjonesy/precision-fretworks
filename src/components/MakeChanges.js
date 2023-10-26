@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { useNavigate } from "react-router-dom"
 import { editedRepairToDatabase } from "../services/AllServices";
+import { GoTrash } from 'react-icons/go'
 
 
 
@@ -248,7 +249,7 @@ export const MakeChanges = ({ currentUser }) => {
                         <ul>
                         {changedOrder?.serviceId && (
                                 <li>
-                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button onClick={handleRemoveService}>🗑️</button></span></p>
+                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button className="trash" onClick={handleRemoveService}><GoTrash /></button></span></p>
                                 </li>
                             )}
                             {/* <li className="mb-6 text-left">{selectedServiceDescription}</li> */}

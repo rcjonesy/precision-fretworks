@@ -67,14 +67,14 @@ export const AllRequestList = ({ currentUser }) => {
 
 
 
-  // function generateRandomOrderNumber() {
-  //   // Generate a random number between 100,000 and 999,999
-  //   const min = 100000;
-  //   const max = 999999;
-  //   const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+//  const randomNumberGenerator = () => {
+//     // Generate a random number between 100,000 and 999,999
+//     const min = 100000;
+//     const max = 999999;
+//     const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-  //   return randomOrderNumber
-  // }
+//     return randomOrderNumber
+//   }
 
 
 
