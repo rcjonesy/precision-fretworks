@@ -19,8 +19,11 @@ export const AllRequestList = ({ currentUser }) => {
   //this has all of the USER expanded repairs
   const [filteredRepairs, setFilteredRepairs] = useState([])
 
+  
+
   const navigate = useNavigate()
 
+  
 
   useEffect(() => {
     fetchAllServicesFromDatabase().then((servicesArray) => {
@@ -95,7 +98,7 @@ export const AllRequestList = ({ currentUser }) => {
 
 
   return (
-    <section className="mb-4 mt-4">
+    <section className="mb-4 mt-4 ml-11 mt-11">
       {filteredRepairs.map((repair) => {
         return (
           <>
@@ -122,11 +125,11 @@ export const AllRequestList = ({ currentUser }) => {
               {repair.isCompleted ?
            <div>
               <div>Ready for Pickup</div> 
-              {/* <div>-Repaired by {repair.completedBy}</div>  */}
+              <div>Completed by:</div>
           </div>:
           <div>Expect 5 day turnaround from drop off date</div>}
 
-            <div className="mt-5">
+            <div className="mt-5 mb-11">
                   <button className="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`) }}>Make Changes</button>
                   <button className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
             </div>

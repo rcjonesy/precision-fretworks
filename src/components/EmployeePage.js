@@ -16,7 +16,7 @@ export const EmployeePage = ({ currentUser }) => {
   const [user, setUser] = useState([])
 
 
-  console.log(currentUser)
+  
 
   //rendering all repairs 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const EmployeePage = ({ currentUser }) => {
     return randomOrderNumber
   }
 
-  console.log(user)
+  
 
   let totalPrice = 0
 
@@ -65,34 +65,35 @@ export const EmployeePage = ({ currentUser }) => {
   //     }
   //   })
   // }
-  console.log(user.name)
+ 
   const handleOnChange = (event, repair) => {
     const updatedRepair = {
-      
+
       name: repair.name,
-      email: repair.email ,
-      phoneNumber: repair.phoneNumber ,
-      guitarType: repair.guitarType ,
-      serviceId: repair.serviceId ,
-      dropoffDate: repair.dropoffDate ,
-      isRushed: repair.isRushed ,
-      additionalDetails: repair.additionalDetails ,
+      email: repair.email,
+      phoneNumber: repair.phoneNumber,
+      guitarType: repair.guitarType,
+      serviceId: repair.serviceId,
+      dropoffDate: repair.dropoffDate,
+      isRushed: repair.isRushed,
+      additionalDetails: repair.additionalDetails,
       isCompleted: !repair.isCompleted,
-      userId: repair.userId ,
-      orderNumber: repair.orderNumber ,
+      userId: repair.userId,
+      orderNumber: repair.orderNumber,
       id: repair.id,
-      completedBy: user.name
+      completedBy: user.fullName
 
     }
-    console.log(updatedRepair)
+    
 
-        editedRepairToDatabase(updatedRepair).then(() => {
-        fetchAllRepairsServices().then((repairsArray) => {
+
+    editedRepairToDatabase(updatedRepair).then(() => {
+      fetchAllRepairsServices().then((repairsArray) => {
         setAllRepairs(repairsArray)
 
       })
     })
-   }
+  }
 
   return (
     <section className="mb-4 mt-4">
@@ -116,13 +117,24 @@ export const EmployeePage = ({ currentUser }) => {
           {repair.isRushed ? <div><strong>Total Price:</strong> ${repair.service.fee + 75}</div> : null}
           <div className="pt-3">
 
-            <strong className="pr-2">Completed:</strong><input
-              type="checkbox"
-              checked={repair.isCompleted}
-              onChange={(event) => { handleOnChange(event, repair) }}
-            /></div>
+            <strong className="pr-2">Completed:</strong>
+
+            <label className="switch">
+              <>
+                <input
+                  type="checkbox"
+                  checked={repair.isCompleted}
+                  onChange={(event) => { handleOnChange(event, repair) }}
+                />
+                <span className="slider round"></span>
+              </>
+            </label>
+
+
+
+          </div>
           <div className="mt-5">
-            {/* <button className="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Notify Customer</button> */}
+            
 
           </div>
         </div>

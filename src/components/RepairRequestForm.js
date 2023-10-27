@@ -47,9 +47,9 @@ export const RepairRequestForm = ({ currentUser }) => {
         const min = 100000;
         const max = 999999;
         const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-    
+
         return randomOrderNumber
-      }
+    }
 
     useEffect(() => {
         fetchAllServicesFromDatabase().then((servicesArray) => {
@@ -114,7 +114,7 @@ export const RepairRequestForm = ({ currentUser }) => {
 
     const handleSaveRepairToDatabase = (event) => {
         event.preventDefault()
-        const copy = {...newOrder}
+        const copy = { ...newOrder }
         copy.orderNumber = generateRandomOrderNumber()
         updateNewRepairToDatabase(copy).then(() => {
             navigate(`/repairrequest/`)
@@ -209,16 +209,25 @@ export const RepairRequestForm = ({ currentUser }) => {
                             }}
                         />
                         <div>
-                            <label className="block text-gray-700 text-sm ml-2">$75 fee for under 2 day turnaroud.</label>
+                            <label className="block text-gray-700 text-sm ml-2 pr-2">$75 fee for under 2 day turnaroud.</label>
                         </div>
-                        <input
-                            className="form-checkbox h-5 w-5 text-green-600 ml-2"
 
-                            type="checkbox"
-                            onChange={(event) => {
-                                setNewOrder({ ...newOrder, isRushed: !newOrder.isRushed })
-                            }}
-                        />
+
+                        <label className="switch-form">
+                            <input
+                                className="form-checkbox h-5 w-5 text-green-600 ml-2"
+
+                                type="checkbox"
+                                onChange={(event) => {
+                                    setNewOrder({ ...newOrder, isRushed: !newOrder.isRushed })
+                                }}
+                            />
+                            <span className="slider round"></span>
+                        </label>
+
+
+
+
                     </div>
                 </div>
 
@@ -283,7 +292,7 @@ export const RepairRequestForm = ({ currentUser }) => {
                 </div>
 
                 <div className="mb-6">
-                    <button className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
+                    <button className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
                         onClick={handleSaveRepairToDatabase}>
                         Submit Repair Request
                     </button>
