@@ -15,13 +15,13 @@ export const MakeChanges = ({ currentUser }) => {
     // this is my SINGLE REPAIR by ID
     const [repair, setRepair] = useState([])
     const [isServiceSelected, setIsServiceSelected] = useState(false)
-    
+
     const [services, setServices] = useState([])
     // const [selectedServiceDescription, setSelectedServiceDescription] = useState([])
     const [chosenService, setChosenService] = useState("")
     // const [isRushedChecked, setIsRushedChecked] = useState(false);
     // const [selectedServiceId, setSelectedServiceId] = useState("0")
-   
+
 
     const navigate = useNavigate()
     // this is my CHANGES
@@ -81,7 +81,7 @@ export const MakeChanges = ({ currentUser }) => {
 
     const handleServiceChange = (event) => {
         const selectedServiceId = parseInt(event.target.value);
-        const copy = {...changedOrder}
+        const copy = { ...changedOrder }
         copy.serviceId = selectedServiceId
         setChangedOrder(copy)
         const findService = services.find((service) => {
@@ -105,7 +105,7 @@ export const MakeChanges = ({ currentUser }) => {
         //     setChosenService(selectedService)
         // }
     }
-   
+
 
 
     const handleEditRepairToDatabase = (event) => {
@@ -114,7 +114,7 @@ export const MakeChanges = ({ currentUser }) => {
         editedRepairToDatabase(changedOrder).then(() => {
             navigate("/repairrequest")
         })
-        
+
     }
 
     const handleRemoveService = (event) => {
@@ -126,12 +126,12 @@ export const MakeChanges = ({ currentUser }) => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-start ml-80">
             <form className="w-full max-w-md">
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Full Name:</label> */}
                     <input
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                         required
                         type="text"
                         placeholder="Full Name"
@@ -147,7 +147,7 @@ export const MakeChanges = ({ currentUser }) => {
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Email:</label> */}
                     <input
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                         required
                         type="text"
                         placeholder="Email"
@@ -163,7 +163,7 @@ export const MakeChanges = ({ currentUser }) => {
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label> */}
                     <input
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                         required
                         type="text"
                         placeholder="Phone Number"
@@ -179,7 +179,7 @@ export const MakeChanges = ({ currentUser }) => {
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Select Guitar Type:</label> */}
                     <input
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                         required
                         type="text"
                         placeholder="Select Guitar Type"
@@ -193,11 +193,11 @@ export const MakeChanges = ({ currentUser }) => {
                 </div>
 
                 <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2 ">Drop Off Date:</label>
+                    <label className="block text-gray-200 text-sm mb-2 ">Drop Off Date:</label>
 
                     <div className="flex items-center">
                         <input
-                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                             required
                             type="date"
                             value={changedOrder.dropoffDate}
@@ -211,25 +211,31 @@ export const MakeChanges = ({ currentUser }) => {
                             }}
                         />
                         <div>
-                            <label className="block text-gray-700 text-sm ml-2">$75 fee for under 2 day turnaroud.</label>
+                            <label className="block text-gray-200 text-sm ml-2 pr-2">$75 fee for under 2 day turnaroud.</label>
                         </div>
-                        <input
-                            className="form-checkbox h-5 w-5 text-green-600 ml-2"
-                            
-                            type="checkbox"
-                            onChange={(event) => {
-                                setChangedOrder({ ...changedOrder, isRushed: !changedOrder.isRushed })
-                            }}
-                            checked={changedOrder.isRushed}
-                        />
+
+                        <label className="switch-form">
+                            <input
+                                className="form-checkbox h-5 w-5 text-green-600 ml-2"
+
+                                type="checkbox"
+                                onChange={(event) => {
+                                    setChangedOrder({ ...changedOrder, isRushed: !changedOrder.isRushed })
+                                }}
+                                checked={changedOrder.isRushed}
+                            />
+                            <span className="slider round"></span>
+                        </label>
+
+
                     </div>
                 </div>
 
                 <div className="mb-6 flex">
                     <div className="w-1/2 pr-2">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Select services:</label>
+                        <label className="block text-gray-200 text-sm  mb-2">Select services:</label>
                         <select
-                            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
                             onChange={handleServiceChange}>
                             <option value={changedOrder.serviceId}>{changedOrder?.service?.service_name} -$ {changedOrder?.service?.fee}</option>
                             {services?.map((service) => (
@@ -240,16 +246,24 @@ export const MakeChanges = ({ currentUser }) => {
                         </select>
                     </div>
 
-                   
-                              
-                                
+
+
+
 
 
                     <div className="w-1/2 pl-2">
                         <ul>
-                        {changedOrder?.serviceId && (
+                            {changedOrder?.serviceId && (
                                 <li>
-                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button className="trash" onClick={handleRemoveService}><GoTrash /></button></span></p>
+                                    <p
+                                        className="text-gray-200">{chosenService?.description} - ${chosenService.fee} <span>
+                                            <div>
+
+                                                <button className="trash text-2xl mt-1.5" onClick={handleRemoveService}><GoTrash /></button>
+
+                                            </div>
+                                        </span>
+                                    </p>
                                 </li>
                             )}
                             {/* <li className="mb-6 text-left">{selectedServiceDescription}</li> */}
@@ -281,20 +295,20 @@ export const MakeChanges = ({ currentUser }) => {
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Any Additional Details:</label> */}
                     <textarea
-                        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"
-                        value={changedOrder.additionalDetails}               
+                        className="appearance-none border rounded w-full py-2 px-3 black leading-tight focus:outline-none focus:shadow-outline h-32  bg-gray-200 placeholder-gray-500"
+                        value={changedOrder.additionalDetails}
                         placeholder="Any additional details"
                         onChange={(event) => {
                             const copy = { ...changedOrder }
                             copy.additionalDetails = event.target.value;
-                            
+
                             setChangedOrder(copy)
                         }}
                     ></textarea>
                 </div>
 
                 <div className="mb-6">
-                    <button className="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
+                    <button className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
                         onClick={handleEditRepairToDatabase}>
                         Submit Updated Repair Request
                     </button>
@@ -303,7 +317,7 @@ export const MakeChanges = ({ currentUser }) => {
         </div>
 
     )
-    
+
 }
 
 

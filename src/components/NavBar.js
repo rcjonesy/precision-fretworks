@@ -14,7 +14,7 @@ export const NavBar = () => {
     <nav className="bg-black p-4">
       <div className=" mx-auto flex  items-center">
         <div>
-          <Link to="/" className="text-white text-2xl font-bold ml-5">
+          <Link to="/" className="text-white text-5xl font-bold ml-5">
             Precision Fretworks
           </Link>
         </div>

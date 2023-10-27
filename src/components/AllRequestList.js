@@ -98,40 +98,40 @@ export const AllRequestList = ({ currentUser }) => {
 
 
   return (
-    <section className="mb-4 mt-4 ml-11 mt-11">
+    <section className="mb-4 mt-4 ml-20">
       {filteredRepairs.map((repair) => {
         return (
           <>
-              <div className="font-bold text-lg mb-2">Order # {repair?.orderNumber}</div>
-              <div className="text-lg font-semibold mb-2">Customer: {repair?.name}</div>
-              <div><strong>Email:</strong> {repair?.email}</div>
-              <div><strong>Phone Number:</strong> {repair?.phoneNumber}</div>
-              <div><strong>Guitar: </strong>{repair?.guitarType}</div>
+              <div className="font-bold text-lg mb-2 text-gray-200">Order # {repair?.orderNumber}</div>
+              <div className="text-lg font-semibold mb-2 text-gray-200">Customer: {repair?.name}</div>
+              <div className="text-gray-200 mb-1.5"><strong>Email:</strong> {repair?.email}</div>
+              <div className="text-gray-200 mb-1.5" ><strong>Phone Number:</strong> {repair?.phoneNumber}</div>
+              <div className="text-gray-200 mb-1.5"><strong>Instrument: </strong>{repair?.guitarType}</div>
 
               <ul>
                 <li>
-                <strong>Services:</strong>
-                <p>-{repair.service.service_name}</p>
+                <strong className="text-gray-200 mb-1.5">Services:</strong>
+                <p className="text-gray-200 mb-1.5">-{repair.service.service_name}</p>
                 </li>
               </ul>
 
-              <div><strong>Drop off Date:</strong> {repair.dropoffDate}</div>
-              <div><strong>Additional Details: </strong>{repair.additionalDetails}</div>
-              <div><strong>Price:</strong> {repair.service.fee} </div>
-              {repair.isRushed ? <div className="text-red-600">+$75 rush fee</div> : null}
-              {repair.isRushed ? <div><strong>TotalPrice:</strong> ${repair.service.fee + 75}</div> : null}
+              <div className="text-gray-200 mb-1.5"><strong>Drop off Date:</strong> {repair.dropoffDate}</div>
+              <div className="text-gray-200 mb-1.5"><strong>Additional Details: </strong>{repair.additionalDetails}</div>
+              <div className="text-gray-200 mb-1.5"><strong>Price:</strong> {repair.service.fee} </div>
+              {repair.isRushed ? <div className="text-red-600 mb-1.5">+$75 rush fee</div> : null}
+              {repair.isRushed ? <div className="text-gray-200 mb-1.5"><strong>TotalPrice:</strong> ${repair.service.fee + 75}</div> : null}
 
-              <div><strong>Repair Status:</strong></div>
+              <div className="text-gray-200 mb-1.5"><strong>Repair Status:</strong></div>
               {repair.isCompleted ?
            <div>
-              <div>Ready for Pickup</div> 
-              <div>Completed by:</div>
+              <div className="text-gray-200 mb-1.5">Ready for Pickup</div> 
+              <div className="text-gray-200 mb-1.5">Completed by:</div>
           </div>:
-          <div>Expect 5 day turnaround from drop off date</div>}
+          <div className="text-gray-200 mb-1.5">Expect 5 day turnaround from drop off date</div>}
 
             <div className="mt-5 mb-11">
-                  <button className="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`) }}>Make Changes</button>
-                  <button className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
+                  <button className="bg-blue-700 hover:bg-blue-500 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`) }}>Make Changes</button>
+                  <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
             </div>
 
 

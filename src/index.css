@@ -3,15 +3,17 @@
 @tailwind utilities;
 
 body {
-  background-image: url("");
-  background-size: cover; /* This will make the image cover the entire element */
+  background-color: black;
+  background-image: url("C:\Users\ryanc\workspace\precision-fretworks\src\backgroundImage\iStock-496494356.jpg");
+  background-size: contain; /* This will make the image cover the entire element */
   background-position: center; /* This will center the image within the element */
   background-repeat: no-repeat; /* This will prevent the image from repeating */
   height: 100vh; 
 }
 
 .trash {
-  color: rgb(221, 38, 38);
+  color: rgb(237, 13, 13);
+
 }
 
 .trash:hover {
