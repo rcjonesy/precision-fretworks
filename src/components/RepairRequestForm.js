@@ -2,6 +2,7 @@ import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { useEffect, useState } from "react"
 import { updateNewRepairToDatabase } from "../services/AllServices";
 import { useNavigate } from "react-router-dom";
+import { GoTrash } from 'react-icons/go'
 
 
 
@@ -243,7 +244,7 @@ export const RepairRequestForm = ({ currentUser }) => {
                             {/* <li className="mb-6 text-left">{selectedServiceDescription}</li> */}
                             {newOrder?.serviceId && (
                                 <li>
-                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button onClick={handleRemoveService}>🗑️</button></span></p>
+                                    <p>{chosenService?.description} - ${chosenService.fee} <span><button className="trash" onClick={handleRemoveService}><GoTrash /></button></span></p>
                                 </li>
                                 // <div>
                                 //     {newOrder?.service?.map((service) => { return <li key={service}><div>{service}</div>

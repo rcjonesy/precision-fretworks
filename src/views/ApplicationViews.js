@@ -7,6 +7,9 @@ import { NavBar } from "../components/NavBar"
 import { AllRequestList } from "../components/AllRequestList"
 import { MakeChanges } from "../components/MakeChanges"
 import { EmployeePage } from "../components/EmployeePage"
+import { MainFooter } from "../components/MainFooter"
+
+
 
 
 
@@ -30,6 +33,8 @@ export const ApplicationViews = () => {
                         < NavBar />
                         {/* outlet */}
                         < Outlet />
+
+                       < MainFooter className="mt-auto" />
 
                     </>
                 }>

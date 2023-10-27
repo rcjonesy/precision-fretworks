@@ -46,7 +46,7 @@ export const Login = () => {
             value={email}
             className="w-full px-4 py-3 border border-gray-300 rounded-md text-xl focus:outline-none focus:ring focus:border-blue-400"
             onChange={(evt) => setEmail(evt.target.value)}
-            placeholder="RyanJones@gmail.com"
+            placeholder="RyanJones@email.com"
             required
             autoFocus
           />
