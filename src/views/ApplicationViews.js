@@ -8,6 +8,7 @@ import { AllRequestList } from "../components/AllRequestList"
 import { MakeChanges } from "../components/MakeChanges"
 import { EmployeePage } from "../components/EmployeePage"
 import { MainFooter } from "../components/MainFooter"
+import  '../index.css'
 
 
 
@@ -40,10 +41,7 @@ export const ApplicationViews = () => {
                 }>
                 {/* index welcome */}
 
-                <Route
-                    index
-                    element={<Welcome />}>
-                </Route>
+           
 
 
 

@@ -8,15 +8,21 @@ import { editedRepairToDatabase } from "../services/AllServices"
 
 
 
+
 export const EmployeePage = ({ currentUser }) => {
 
   // this is expanded with services
   const [repairs, setAllRepairs] = useState([])
   // const [services, setAllServices] = useState([])
   const [user, setUser] = useState([])
+  const [showTextArea, setShowTextArea] = useState({})
+  const [messages, setMessages] = useState({})
+  const [updatedRepair, setUpdatedRepair] = useState(null)
 
 
-  
+
+
+
 
   //rendering all repairs 
   useEffect(() => {
@@ -50,7 +56,7 @@ export const EmployeePage = ({ currentUser }) => {
     return randomOrderNumber
   }
 
-  
+
 
   let totalPrice = 0
 
@@ -65,7 +71,7 @@ export const EmployeePage = ({ currentUser }) => {
   //     }
   //   })
   // }
- 
+
   const handleOnChange = (event, repair) => {
     const updatedRepair = {
 
@@ -81,45 +87,90 @@ export const EmployeePage = ({ currentUser }) => {
       userId: repair.userId,
       orderNumber: repair.orderNumber,
       id: repair.id,
-      completedBy: user.fullName
-
+      completedBy: user.fullName,
+      message: ""
     }
-    
+
 
 
     editedRepairToDatabase(updatedRepair).then(() => {
       fetchAllRepairsServices().then((repairsArray) => {
         setAllRepairs(repairsArray)
 
+        setUpdatedRepair(updatedRepair)
+
       })
     })
   }
 
+  const handleMessageButton = (event, repairId) => {
+    setShowTextArea(prevState => ({
+      ...prevState,
+      [repairId]: !prevState[repairId]
+    }))
+  }
+
+  const handleMessageChange = (event, repairId) => {
+    setMessages(prevState => ({
+      ...prevState,
+      [repairId]: event.target.value
+    }))
+  }
+
+  const handleSendMessage = (event, repairId) => {
+    // Get the message for the specific repair
+    const message = messages[repairId]
+
+    if (updatedRepair) {
+      const updatedRepairCopy = {
+        ...updatedRepair,
+        message: message,
+      }
+      editedRepairToDatabase(updatedRepairCopy).then(() => {
+        setUpdatedRepair(updatedRepairCopy) // Update the updatedRepair state
+      })
+    }
+
+    window.alert("Message Sent")
+
+    setMessages(prevState => ({
+      ...prevState,
+      [repairId]: ''
+    }))
+
+    // Hide the textarea
+    setShowTextArea(prevState => ({
+      ...prevState,
+      [repairId]: false
+    }))
+
+  }
+
   return (
-    <section className="mb-4 mt-4">
+    <section className="mb-4 mt-20 ml-20 max-h-[px] overflow-y-auto">
       {repairs.map((repair) => (
-        <div key={repair.id} className="border border-gray-300 p-4 mb-4 ml-4" >
-          <div className="font-bold text-lg mb-2">Order # {reset()} {generateRandomOrderNumber()}</div>
-          <div className="text-lg font-semibold mb-2">Customer: {repair.name}</div>
-          <div><strong>Email:</strong> {repair.email}</div>
-          <div><strong>Phone Number:</strong> {repair.phoneNumber}</div>
-          <div><strong>Instrument:</strong> {repair.guitarType}</div>
-          <ul className="list-none pl-4">
+        <div key={repair.id} className=" p-4 mb-4 ml-4" >
+          <div className=" text-gray-200 font-bold text-lg mb-2">-Order # {reset()} {generateRandomOrderNumber()}</div>
+          <div className=" text-gray-200 text-lg font-semibold mb-2">Customer: {repair.name}</div>
+          <div className="text-gray-200 mb-1.5"><strong>Email:</strong> {repair.email}</div>
+          <div className="text-gray-200 mb-1.5"><strong>Phone Number:</strong> {repair.phoneNumber}</div>
+          <div className="text-gray-200 mb-1.5"><strong>Instrument:</strong> {repair.guitarType}</div>
+          <ul className="list-none pl-4 text-gray-200 mb-1.5">
             <strong>Services:</strong>
 
-            <li key={repair.service.id}>- {repair.service.service_name}</li>
+            <li className="text-gray-200 mb-1.5" key={repair?.service?.id}>- {repair?.service?.service_name}</li>
 
           </ul>
-          <div><strong>Drop off Date:</strong> {repair.dropoffDate}</div>
-          <div><strong>Additional Details:</strong> {repair.additionalDetails}</div>
-          <div><strong>Price: </strong>${repair.service.fee} </div>
-          {repair.isRushed ? <div className="text-red-600">+$75 rush fee</div> : null}
-          {repair.isRushed ? <div><strong>Total Price:</strong> ${repair.service.fee + 75}</div> : null}
-          <div className="pt-3">
+          <div className="text-gray-200 mb-1.5"><strong>Drop off Date:</strong> {repair.dropoffDate}</div>
+          <div className="text-gray-200 mb-1.5"><strong>Additional Details:</strong> {repair.additionalDetails}</div>
+          <div className="text-gray-200 mb-1.5"><strong>Price: </strong>${repair?.service?.fee} </div>
+          {repair.isRushed ? <div className="text-red-600  mb-1.5">+$75 rush fee</div> : null}
+          {repair.isRushed ? <div className="text-gray-200  mb-1.5"><strong>Total Price:</strong> ${repair.service.fee + 75}</div> : null}
+          <div className="pt-3 text-gray-200">
 
-            <strong className="pr-2">Completed:</strong>
+            <strong className="pr-2 text-gray-200  mb-1.5">Completed:</strong>
 
-            <label className="switch">
+            <label className="switch text-gray-200 mb-1.5">
               <>
                 <input
                   type="checkbox"
@@ -129,13 +180,34 @@ export const EmployeePage = ({ currentUser }) => {
                 <span className="slider round"></span>
               </>
             </label>
-
-
-
-          </div>
-          <div className="mt-5">
+            <div>
+              <button
+                className="bg-blue-700 hover-bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 mt-5"
+                onClick={(event) => handleMessageButton(event, repair.id)}
+              >
+                Message Customer
+              </button>
+              {showTextArea[repair.id] && (
+                <div>
+                  <div className="mt-5">
+                    <textarea
+                      className="w-64 h-40 p-2 ml-0 text-black border rounded"
+                      placeholder="Type your message here"
+                      onChange={(event) => handleMessageChange(event, repair.id)}
+                    />
+                  </div>
+                  <div className="mt-5">
+                    <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
+                      onClick={(event) => handleSendMessage(event, repair.id)}>
+                      Send Message
+                    </button>
+           
             
-
+                  </div>
+                </div>
+              )}
+              <div className="text-gray-200 mt-10">---------------------------------</div>
+            </div>
           </div>
         </div>
       ))}

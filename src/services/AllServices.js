@@ -52,3 +52,7 @@ export const fetchAllRepairsServices = () => {
   return fetch("http://localhost:8088/repairs?_expand=service").then((response) => response.json())
 }
 
+export const fetchAllGuitars = () => {
+  return fetch("http://localhost:8088/guitars").then((response) => response.json())
+}
+

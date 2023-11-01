@@ -4,17 +4,24 @@
 
 body {
   background-color: black;
+  
   background-image: url("C:\Users\ryanc\workspace\precision-fretworks\src\backgroundImage\iStock-496494356.jpg");
   background-size: contain; /* This will make the image cover the entire element */
   background-position: center; /* This will center the image within the element */
   background-repeat: no-repeat; /* This will prevent the image from repeating */
   height: 100vh; 
+ 
 }
 
+.logo {
+
+}
 .trash {
   color: rgb(237, 13, 13);
 
 }
+
+
 
 .trash:hover {
   color: black;
@@ -90,11 +97,11 @@ code {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #1d4ed8;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #064375;
 }
 
 input:checked + .slider:before {

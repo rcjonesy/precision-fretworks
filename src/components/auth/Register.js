@@ -50,43 +50,45 @@ export const Register = (props) => {
   };
 
   return (
-    <main className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <form
-        className="bg-white p-8 rounded-lg shadow-md w-96"
-        onSubmit={handleRegister}
-      >
-        <h1 className="text-3xl font-bold mb-4">Precision Fretworks</h1>
-        <h2 className="text-lg mb-4">Please Register</h2>
-        <div className="mb-4">
-          <input
-            onChange={updateUser}
-            type="text"
-            id="fullName"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
-            placeholder="Enter your name"
-            required
-            autoFocus
-          />
-        </div>
-        <div className="mb-4">
-          <input
-            onChange={updateUser}
-            type="email"
-            id="email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
-            placeholder="Email address"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-          >
-            Register
-          </button>
-        </div>
-      </form>
-    </main>
+    <div>
+      <main className="min-h-screen flex items-center justify-start ml-80">
+        <form
+          className="bg-white p-8 rounded-lg shadow-md w-96"
+          onSubmit={handleRegister}
+        >
+          {/* <h1 className="text-3xl font-bold mb-4">Precision Fretworks</h1> */}
+          <h2 className="text-lg mb-4">Please Register</h2>
+          <div className="mb-4">
+            <input
+              onChange={updateUser}
+              type="text"
+              id="fullName"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
+              placeholder="Enter your name"
+              required
+              autoFocus
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              onChange={updateUser}
+              type="email"
+              id="email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400"
+              placeholder="Email address"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
   );
 };
