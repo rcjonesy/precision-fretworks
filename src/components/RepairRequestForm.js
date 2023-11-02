@@ -7,6 +7,7 @@ import { GuitarSearch } from "./GuitarSearch";
 
 
 
+
 export const RepairRequestForm = ({ currentUser }) => {
 
 
@@ -97,7 +98,7 @@ export const RepairRequestForm = ({ currentUser }) => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-start ml-80">
+        <div className="min-h-screen flex justify-start ml-80 pt-11">
             <form className="w-full max-w-md">
                 <div className="mb-6">
 
@@ -249,7 +250,7 @@ export const RepairRequestForm = ({ currentUser }) => {
                 </div>
 
 
-                <button className="bg-blue-600 mb-6 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
+                <button className="bg-blue-600  hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
                     onClick={handleSaveRepairToDatabase}>
                     Submit Repair Request
                 </button>

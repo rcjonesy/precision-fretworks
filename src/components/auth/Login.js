@@ -35,24 +35,24 @@ export const Login = () => {
           navigate("/repairrequestform"); // Navigate to a different page for non-staff (e.g., customers)
         }
       } else {
-        window.alert("Invalid login");
+        window.alert("Invalid login")
       }
     })
   }
 
   return (
-    <div className="min-h-screen flex  text-white">
-    <nav className="p-4">
-      <div className="flex items-center">
-        <Link to="/" className="text-4xl font-bold ml-4">
-          Precision Fretworks
-        </Link>
-      </div>
-    </nav>
+    <div className="min-h-screen flex justify-around mr-20 text-white">
+    {/* <nav className="p-4">
+    <div className="mt-7" style={{ marginLeft: '4rem' }}>
+          <Link to="/" className="text-white text-7xl ml-20 mt-20">
+            {/* Precision Fretworks */}
+          {/* </Link> */}
+        {/* </div> */}
+    {/* </nav> */} 
   
-    <main className="min-h-screen flex items-center justify-center">
-      <form className="bg-slate-500 bg-opacity-70 p-10 rounded-lg shadow-md w-96 ml-40" onSubmit={handleLogin}>
-        <h1 className="text-4xl font-extrabold mb-6 logo">Welcome to Precision Fretworks</h1>
+    <main className="min-h-screen flex items-center justify-around">
+      <form className="bg-white bg-opacity-10 p-10 rounded-lg shadow-md w-96" onSubmit={handleLogin}>
+        <h1 className="text-5xl mb-9 logo">Welcome to Precision Fretworks</h1>
         <h2 className="text-2xl mb-6">Please sign in</h2>
         <div className="mb-6">
           <input
@@ -73,8 +73,8 @@ export const Login = () => {
             Sign in
           </button>
         </div>
-        <div className="mt-6 text-center">
-          <Link to="/register" className="text-blue-500 hover:underline text-xl">
+        <div className="mt-6">
+          <Link to="/register" className="text-white hover:underline text-xl">
             Not a member yet? 
           </Link>
         </div>

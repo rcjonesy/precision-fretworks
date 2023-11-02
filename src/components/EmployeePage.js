@@ -147,7 +147,7 @@ export const EmployeePage = ({ currentUser }) => {
   }
 
   return (
-    <section className="mb-4 mt-20 ml-20 max-h-[px] overflow-y-auto">
+    <section className=" bg-white bg-opacity-10 w-1/3 mb-4 mt-20 ml-40 max-h-[850px] overflow-y-auto pb-4 pl-10 pt-10 mr-40 custom-scrollbar rounded-lg custom-border">
       {repairs.map((repair) => (
         <div key={repair.id} className=" p-4 mb-4 ml-4" >
           <div className=" text-gray-200 font-bold text-lg mb-2">-Order # {reset()} {generateRandomOrderNumber()}</div>
@@ -182,7 +182,7 @@ export const EmployeePage = ({ currentUser }) => {
             </label>
             <div>
               <button
-                className="bg-blue-700 hover-bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 mt-5"
+                className="bg-blue-600 hover-bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 mt-5"
                 onClick={(event) => handleMessageButton(event, repair.id)}
               >
                 Message Customer
@@ -206,7 +206,6 @@ export const EmployeePage = ({ currentUser }) => {
                   </div>
                 </div>
               )}
-              <div className="text-gray-200 mt-10">---------------------------------</div>
             </div>
           </div>
         </div>

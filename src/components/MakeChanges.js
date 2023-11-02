@@ -5,6 +5,9 @@ import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { useNavigate } from "react-router-dom"
 import { editedRepairToDatabase } from "../services/AllServices";
 import { GoTrash } from 'react-icons/go'
+import { MakeChangesGuitarSearch } from "./MakeChangesGuitarSearch";
+
+
 
 
 
@@ -126,7 +129,7 @@ export const MakeChanges = ({ currentUser }) => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-start ml-80">
+        <div className="min-h-screen flex justify-start ml-80 pt-11">
             <form className="w-full max-w-md">
                 <div className="mb-6">
                     {/* <label className="block text-gray-700 text-sm font-bold mb-2">Full Name:</label> */}
@@ -177,8 +180,15 @@ export const MakeChanges = ({ currentUser }) => {
                 </div>
 
                 <div className="mb-6">
-                    {/* <label className="block text-gray-700 text-sm font-bold mb-2">Select Guitar Type:</label> */}
-                    <input
+
+                    {/* < MakeChangesGuitarSearch 
+                    changedOrder={changedOrder}
+                    newOrder={newOrder}
+                    setNewOrder={setNewOrder}
+                    setResults={setResults}
+                    results={results}/> */}
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Select Guitar Type:</label> 
+                      <input
                         className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 gray-900 placeholder-gray-500"
                         required
                         type="text"
@@ -190,7 +200,7 @@ export const MakeChanges = ({ currentUser }) => {
                             setChangedOrder(copy)
                         }}
                     />
-                </div>
+                </div> 
 
                 <div className="mb-6">
                     <label className="block text-gray-200 text-sm mb-2 ">Drop Off Date:</label>
@@ -259,7 +269,7 @@ export const MakeChanges = ({ currentUser }) => {
                                         className="text-gray-200">{chosenService?.description} - ${chosenService.fee} <span>
                                             <div>
 
-                                                <button className="trash text-2xl mt-1.5" onClick={handleRemoveService}><GoTrash /></button>
+                                                <button className="trash text-2xl mt-1" onClick={handleRemoveService}><GoTrash /></button>
 
                                             </div>
                                         </span>
@@ -308,7 +318,7 @@ export const MakeChanges = ({ currentUser }) => {
                 </div>
 
                 <div className="mb-6">
-                    <button className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
+                    <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit"
                         onClick={handleEditRepairToDatabase}>
                         Submit Updated Repair Request
                     </button>

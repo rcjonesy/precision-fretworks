@@ -7,9 +7,10 @@ body {
   
   background-image: url("C:\Users\ryanc\workspace\precision-fretworks\src\backgroundImage\iStock-496494356.jpg");
   background-size: contain; /* This will make the image cover the entire element */
-  background-position: center; /* This will center the image within the element */
+  background-position: 60% center; /* This will center the image within the element */
   background-repeat: no-repeat; /* This will prevent the image from repeating */
   height: 100vh; 
+  overflow-y: scroll
  
 }
 
@@ -97,7 +98,7 @@ code {
 }
 
 input:checked + .slider {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
 }
 
 input:focus + .slider {
@@ -119,3 +120,18 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 /* -------------------------------- */
+
+::-webkit-scrollbar {
+  width: 1px; /* Adjust the width as needed */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Customize the thumb color */
+  border-radius: 3px; /* Adjust the border-radius as needed */
+}
+
+.custom-border {
+  border: 1px solid transparent; /* Add a transparent border */
+  backdrop-filter: blur(50px); /* Adjust the blur strength as needed */
+  border-radius: 8px; /* Adjust the border radius as needed */
+}

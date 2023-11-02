@@ -13,10 +13,10 @@ import  '../index.css'
 export const Welcome= () => {
   return (
    
-    <div className="min-h-screen flex items-start justify-center flex-col text-white ml-20">
+    <div className="min-h-screen flex items-start justify-center flex-col text-white ml-60">
       <div className="text-center"> {/* Center-align content horizontally */}
-        <h1 className="text-6xl font-bold mb-6">Welcome to Precision Fretworks</h1>
-        <Link to="/login" className="hover:underline text-lg text-white">
+        <h1 className="text-8xl  mb-6 ml-50">Welcome to Precision Fretworks</h1>
+        <Link to="/login" className="hover:underline text-lg text-white ml-50">
           Get Started
         </Link>
       </div>

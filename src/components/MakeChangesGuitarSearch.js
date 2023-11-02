@@ -8,7 +8,7 @@ import { FaSearch } from "react-icons/fa"
 
 
 
-export const GuitarSearch = ({ newOrder, setNewOrder, setResults, results }) => {
+export const MakeChangesGuitarSearch = ({ newOrder, setNewOrder, setResults, results, changedOrder }) => {
 
     const [input, setInput] = useState("")
     const [selectedGuitar, setSelectedGuitar] = useState(null)
@@ -105,7 +105,7 @@ export const GuitarSearch = ({ newOrder, setNewOrder, setResults, results }) => 
                     required
                     type="text"
                     placeholder="Search Guitar Type"
-                    value={selectedGuitar || input}
+                    value={selectedGuitar || input || changedOrder.guitarType}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => {
                         handleChange(e.target.value)
@@ -116,7 +116,7 @@ export const GuitarSearch = ({ newOrder, setNewOrder, setResults, results }) => 
 
 
             </div>
-            <button className="bg-blue-600 mb-6 hover:bg-blue-500 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-2" onClick={clearInput}>
+            <button className="bg-blue-600 mb-6 hover:bg-blue-800 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline" onClick={clearInput}>
                 clear
             </button>
             {isDropdownOpen && (
