@@ -27,9 +27,11 @@ export const EmployeePage = ({ currentUser }) => {
   //rendering all repairs 
   useEffect(() => {
     fetchAllRepairsServices().then((repairsArray) => {
-      setAllRepairs(repairsArray)
-    })
-  }, [])
+      // Sort the repairs array so that rushed repairs appear at the top
+      const sortedRepairs = [...repairsArray].sort((a, b) => (b.isRushed ? 1 : -1));
+      setAllRepairs(sortedRepairs);
+    });
+  }, []);
 
   //rendering all servicess
   // useEffect(() => {
@@ -147,30 +149,30 @@ export const EmployeePage = ({ currentUser }) => {
   }
 
   return (
-    <section className=" bg-white bg-opacity-10 w-1/3 mb-4 mt-20 ml-40 max-h-[850px] overflow-y-auto pb-4 pl-10 pt-10 mr-40 custom-scrollbar rounded-lg custom-border">
+    <section className=" bg-white bg-opacity-10 w-1/3 mb-4 mt-20 ml-40 max-h-[850px] overflow-y-auto pb-4 pl-10 pt-11 mr-40 custom-scrollbar rounded-lg custom-border">
       {repairs.map((repair) => (
         <div key={repair.id} className=" p-4 mb-4 ml-4" >
-          <div className=" text-gray-200 font-bold text-lg mb-2">-Order # {reset()} {generateRandomOrderNumber()}</div>
-          <div className=" text-gray-200 text-lg font-semibold mb-2">Customer: {repair.name}</div>
-          <div className="text-gray-200 mb-1.5"><strong>Email:</strong> {repair.email}</div>
-          <div className="text-gray-200 mb-1.5"><strong>Phone Number:</strong> {repair.phoneNumber}</div>
-          <div className="text-gray-200 mb-1.5"><strong>Instrument:</strong> {repair.guitarType}</div>
-          <ul className="list-none pl-4 text-gray-200 mb-1.5">
+          <div className=" text-white font-bold text-2xl mb-2">-Order # {reset()} {generateRandomOrderNumber()}</div>
+          <div className=" text-white text-lg font-semibold mb-2">Customer: {repair.name}</div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Email:</strong> {repair.email}</div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Phone Number:</strong> {repair.phoneNumber}</div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Instrument:</strong> {repair.guitarType}</div>
+          <ul className="list-none pl-4 text-white mb-1.5">
             <strong>Services:</strong>
 
-            <li className="text-gray-200 mb-1.5" key={repair?.service?.id}>- {repair?.service?.service_name}</li>
+            <li className="text-white mb-1.5" key={repair?.service?.id}>- {repair?.service?.service_name}</li>
 
           </ul>
-          <div className="text-gray-200 mb-1.5"><strong>Drop off Date:</strong> {repair.dropoffDate}</div>
-          <div className="text-gray-200 mb-1.5"><strong>Additional Details:</strong> {repair.additionalDetails}</div>
-          <div className="text-gray-200 mb-1.5"><strong>Price: </strong>${repair?.service?.fee} </div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Drop off Date:</strong> {repair.dropoffDate}</div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Additional Details:</strong> {repair.additionalDetails}</div>
+          <div className="text-white mb-1.5"><strong className="text-xl">Price: </strong>${repair?.service?.fee} </div>
           {repair.isRushed ? <div className="text-red-600  mb-1.5">+$75 rush fee</div> : null}
-          {repair.isRushed ? <div className="text-gray-200  mb-1.5"><strong>Total Price:</strong> ${repair.service.fee + 75}</div> : null}
-          <div className="pt-3 text-gray-200">
+          {repair.isRushed ? <div className="text-white  mb-1.5"><strong className="text-xl">Total Price:</strong> ${repair?.service?.fee + 75}</div> : null}
+          <div className="pt-3 text-white">
 
-            <strong className="pr-2 text-gray-200  mb-1.5">Completed:</strong>
+            <strong className="pr-2 text-white text-xl mb-1.5">Completed:</strong>
 
-            <label className="switch text-gray-200 mb-1.5">
+            <label className="switch text-white mb-1.5">
               <>
                 <input
                   type="checkbox"

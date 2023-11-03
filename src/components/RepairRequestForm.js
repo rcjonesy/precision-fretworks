@@ -4,6 +4,7 @@ import { updateNewRepairToDatabase } from "../services/AllServices";
 import { useNavigate } from "react-router-dom";
 import { GoTrash } from 'react-icons/go'
 import { GuitarSearch } from "./GuitarSearch";
+import { FcCalendar } from "react-icons/fc"
 
 
 
@@ -159,14 +160,17 @@ export const RepairRequestForm = ({ currentUser }) => {
 
 
                 <div className="mb-6">
-                    <label className="block text-gray-200 text-sm mb-2 ">Drop Off Date</label>
+                    <label className="text-gray-200 text-sm mb-2 flex items-center">
+                        Drop Off Date
+                        <FcCalendar className="ml-2 text-3xl" />
+                    </label>
 
                     <div className="flex items-center">
                         <input
                             className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
                             required
                             type="date"
-                            placeholder="mm/dd/yy"
+                            placeholder="choose dropoff date"
                             onChange={(event) => {
                                 const copy = { ...newOrder }
                                 // const date = new Date(event.target.value)
@@ -220,13 +224,16 @@ export const RepairRequestForm = ({ currentUser }) => {
                             {newOrder?.serviceId && (
                                 <li className="text-gray-200">
                                     <p
-                                        className="text-gray-200 mr-5">{chosenService?.description} - ${chosenService.fee}
-                                        <span>
-                                            {/* <div> */}
-                                            <button className="trash mt-1.5 text-2xl" onClick={handleRemoveService}><GoTrash /></button>
-                                            {/* </div> */}
 
-                                        </span>
+                                        className="text-gray-200 mr-5">{chosenService?.description} - ${chosenService.fee}
+                                        <div>
+                                            <span>
+                                                {/* <div> */}
+                                                <button className="trash mt-1.5 text-2xl" onClick={handleRemoveService}><GoTrash /></button>
+                                                {/* </div> */}
+
+                                            </span>
+                                        </div>
                                     </p>
                                 </li>
 

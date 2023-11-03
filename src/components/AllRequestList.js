@@ -69,85 +69,113 @@ export const AllRequestList = ({ currentUser }) => {
   }
 
 
-  //  const randomNumberGenerator = () => {
-  //     // Generate a random number between 100,000 and 999,999
-  //     const min = 100000;
-  //     const max = 999999;
-  //     const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-  //     return randomOrderNumber
-  //   }
-
-
-
-
-  // let totalPrice = 0
-
-  // const reset = () => {
-  //   totalPrice = 0
-  // }
-
-  // const calculatePrice = (serviceName) => {
-  //   services.map((service) => {
-  //     if (service?.service_name === serviceName) {
-  //       totalPrice += service.fee
-  //     }
-  //   })
-  // }
 
 
   return (
-    <section className=" bg-white bg-opacity-10 w-1/3 mb-11 mt-20 ml-40 max-h-[850px] overflow-y-auto pl-10 pt-10 mr-40 custom-scrollbar rounded-lg">
-      {filteredRepairs.map((repair) => {
+
+    <section className=" bg-white pr-10 bg-opacity-10 w-1/3 mb-11 mt-20 ml-40 max-h-[850px] overflow-y-auto pl-10 pt-10 mr-40 custom-scrollbar rounded-lg relative">
+      
+      {filteredRepairs.length === 0 ? (
+     <div className="text-white text-center text-2xl">No repairs at this time</div>
+   ) : (
+      
+      filteredRepairs.map((repair) => {
+
+        const dropoffDate = new Date(repair?.dropoffDate);
+        const formattedDate = dropoffDate.toLocaleDateString(undefined, { timeZone: 'UTC' });
+        const fiveDaysLater = new Date(formattedDate);
+        fiveDaysLater.setDate(fiveDaysLater.getDate() + 5);
+
+        const formattedPickUpDate = `${fiveDaysLater.getMonth() + 1}/${fiveDaysLater.getDate()}/${fiveDaysLater.getFullYear()}`;
+
         return (
-          <div>
-            <div className="font-bold text-xl mb-2 text-white ">-Order # {repair?.orderNumber}</div>
-            <div className="text-lg font-semibold mb-2 text-white">Customer: {repair?.name}</div>
-            <div className="text-white mb-1.5"><strong>Email:</strong> {repair?.email}</div>
-            <div className="text-white mb-1.5" ><strong>Phone Number:</strong> {repair?.phoneNumber}</div>
-            <div className="text-white mb-1.5"><strong>Instrument: </strong>{repair?.guitarType}</div>
+          <div key={repair.id}>
+            <div className="font-bold text-3xl mb-11 text-white ">-Order # {repair?.orderNumber}</div>
+            <div className="text-lg font-semibold mb-2 text-white"><span className="text-2xl">Customer:</span> {repair?.name}</div>
+            <div className="text-white mb-1.5"><strong className="text-xl">Email:</strong> {repair?.email}</div>
+            <div className="text-white mb-1.5" ><strong  className="text-xl">Phone Number:</strong> {repair?.phoneNumber}</div>
+            <div className="text-white mb-1.5"><strong  className="text-xl">Instrument: </strong>{repair?.guitarType}</div>
 
             <ul>
               <li>
-                <strong className="text-white mb-1.5">Services:</strong>
+                <strong className="text-white mb-1.5 text-xl">Services:</strong>
                 <p className="text-white mb-1.5">-{repair?.service?.service_name}</p>
               </li>
             </ul>
 
-            <div className="text-white mb-1.5"><strong>Drop off Date:</strong> {repair?.dropoffDate}</div>
-            <div className="text-white mb-1.5 max-w-md overflow-x-auto"><strong>Additional Details: </strong>{repair?.additionalDetails}</div>
-            <div className="text-white mb-1.5"><strong>Price:</strong> ${repair?.service?.fee} </div>
+            <div className="text-white mb-1.5"><strong className="text-xl">Drop off Date: </strong>{formattedDate}</div>
+            <div className="text-white mb-1.5 max-w-md overflow-x-auto"><strong className="text-xl">Additional Details: </strong>{repair?.additionalDetails}</div>
+            <div className="text-white mb-1.5"><strong className="text-xl">Service Price:</strong> ${repair?.service?.fee} </div>
             {repair.isRushed ? <div className="text-red-600 mb-1.5">+$75 rush fee</div> : null}
-            {repair.isRushed ? <div className="text-white mb-1.5"><strong>TotalPrice:</strong> ${repair?.service?.fee + 75}</div> : null}
+            {repair.isRushed ? <div className="text-white mb-1.5"><strong className="text-xl">TotalPrice:</strong> ${repair?.service?.fee + 75}</div> : null}
 
             <div className="text-white mb-1.5">
-              <strong className="mb-1.5">Repair Status: </strong>
+              <strong className="1.5 text-xl">Repair Status: </strong>
               {repair.isCompleted ? (
                 <span>
-                  Ready for Pickup
+                  Ready for Pickup!
+                  <div className="bg-blue-700 h-2 mt-4 mb-4 rounded-xl" style={{ width: "100%" }}></div>
                   <div className="text-white mb-1.5 mt-1.5">-Repaired by {repair?.completedBy}</div>
-                  <div className="text-white mb-1.5">Message: {repair?.message}</div>
+                  <div className="text-white mb-2">Message: {repair?.message}</div>
+                  {/* Fixed Progress Bar */}
                 </span>
               ) : (
-                "Expect 5 day turnaround from drop off date"
+                <span className="">
+                  Estimated Pickup Date: {formattedPickUpDate}
+                  <div className="mt-2">We're working on it...</div>
+                  {/* Random Progress Bar */}
+                  <div className="bg-gray-300 h-2 mt-4 rounded-xl">
+                    <div className="bg-blue-700 h-2 mr-2 " style={{ width: `${Math.random() * 90}%`, maxWidth: "30%" }}></div>
+
+                  </div>
+                </span>
               )}
+
             </div>
 
 
 
 
-            <div className="mt-5 mb-11">
+            <div className="mt-5 mb-20">
               <button className="bg-blue-700 hover:bg-blue-500 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`) }}>Make Changes</button>
               <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
             </div>
 
-          </div>
-        )
-      })}
 
+            </div>
+          );
+        })
+      )}
     </section>
-  )
-}
+  );
+};
+
+//  const randomNumberGenerator = () => {
+//     // Generate a random number between 100,000 and 999,999
+//     const min = 100000;
+//     const max = 999999;
+//     const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+//     return randomOrderNumber
+//   }
+
+
+
+
+// let totalPrice = 0
+
+// const reset = () => {
+//   totalPrice = 0
+// }
+
+// const calculatePrice = (serviceName) => {
+//   services.map((service) => {
+//     if (service?.service_name === serviceName) {
+//       totalPrice += service.fee
+//     }
+//   })
+// }
 
 
 
