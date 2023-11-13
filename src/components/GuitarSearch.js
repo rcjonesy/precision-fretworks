@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaSearch } from "react-icons/fa"
 
 
@@ -16,17 +16,17 @@ export const GuitarSearch = ({ newOrder, setNewOrder, setResults, results }) => 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
 
-    const fetchAllGuitars = (value) => {
+    
+    const fetchAllGuitars = useCallback((value) => {
         return fetch("http://localhost:8088/guitars")
-            .then((response) => response.json())
-            .then((json) => {
-                const filteredResults = json?.filter((guitar) => {
-                    return value && guitar && guitar?.name && guitar?.name.toLowerCase().includes(value.toLowerCase())
-                });
-                setResults(filteredResults);
+          .then((response) => response.json())
+          .then((json) => {
+            const filteredResults = json?.filter((guitar) => {
+              return value && guitar && guitar?.name && guitar?.name.toLowerCase().includes(value.toLowerCase())
             });
-    };
-
+            setResults(filteredResults);
+          });
+      }, []);
 
     const handleKeyDown = (event) => {
         if (!results || results?.length === 0) {
@@ -90,8 +90,9 @@ export const GuitarSearch = ({ newOrder, setNewOrder, setResults, results }) => 
         if (input === "") {
             fetchAllGuitars("");
         }
-    }, [input, fetchAllGuitars]);
+    }, [input]);
 
+   
 
 
     return (

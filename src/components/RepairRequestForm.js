@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { GoTrash } from 'react-icons/go'
 import { GuitarSearch } from "./GuitarSearch";
 import { FcCalendar } from "react-icons/fc"
+import PhoneInput from 'react-phone-number-input/input';
+import { formatPhoneNumber } from 'react-phone-number-input';
+
+import 'react-phone-number-input/style.css';
 
 
 
@@ -98,6 +102,8 @@ export const RepairRequestForm = ({ currentUser }) => {
 
     }
 
+
+
     return (
         <div className="min-h-screen flex justify-start ml-80 pt-11">
             <form className="w-full max-w-md">
@@ -133,16 +139,18 @@ export const RepairRequestForm = ({ currentUser }) => {
 
                 <div className="mb-6">
 
-                    <input
+                    <PhoneInput
                         className="appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-200 placeholder-gray-500"
                         required
                         type="text"
                         placeholder="Phone Number"
-                        onChange={(event) => {
-                            const copy = { ...newOrder }
-                            copy.phoneNumber = event.target.value;
-                            setNewOrder(copy)
-                        }}
+                        defaultCountry="US"
+                        onChange={(value) => {
+                            const formattedValue = formatPhoneNumber(value);
+                            const copy = { ...newOrder };
+                            copy.phoneNumber = formattedValue.replace(/[^0-9]/g, ''); // Remove non-digit characters
+                            setNewOrder(copy);
+                          }}
                     />
                 </div>
 

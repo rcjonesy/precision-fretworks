@@ -42,11 +42,7 @@ export const AllRequestList = ({ currentUser }) => {
     handleFetchRepairs()
   }, [])
 
-  // useEffect(() => {
-  //   fetchAllRepairs().then((repairsArray) => {
-  //     setAllRepairs(repairsArray)
-  //   })
-  // }, [])
+
 
   // this FILTERS to the USER REPAIRS
   useEffect(() => {
@@ -74,7 +70,7 @@ export const AllRequestList = ({ currentUser }) => {
 
   return (
 
-    <section className=" bg-white pr-10 bg-opacity-10 w-1/3 mb-11 mt-20 ml-40 max-h-[850px] overflow-y-auto pl-10 pt-10 mr-40 custom-scrollbar rounded-lg relative">
+    <section className={`w-1/3 mb-11 mt-20 ml-40 max-h-[850px] overflow-y-auto pl-10 pt-10 mr-40 custom-scrollbar rounded-lg relative`}>
       
       {filteredRepairs.length === 0 ? (
      <div className="text-white text-center text-2xl">No repairs at this time</div>
@@ -90,34 +86,34 @@ export const AllRequestList = ({ currentUser }) => {
         const formattedPickUpDate = `${fiveDaysLater.getMonth() + 1}/${fiveDaysLater.getDate()}/${fiveDaysLater.getFullYear()}`;
 
         return (
-          <div key={repair.id}>
-            <div className="font-bold text-3xl mb-11 text-white ">-Order # {repair?.orderNumber}</div>
-            <div className="text-lg font-semibold mb-2 text-white"><span className="text-2xl">Customer:</span> {repair?.name}</div>
-            <div className="text-white mb-1.5"><strong className="text-xl">Email:</strong> {repair?.email}</div>
-            <div className="text-white mb-1.5" ><strong  className="text-xl">Phone Number:</strong> {repair?.phoneNumber}</div>
-            <div className="text-white mb-1.5"><strong  className="text-xl">Instrument: </strong>{repair?.guitarType}</div>
+          <div key={repair.id} className="p-4 mb-4 ml-4 pb-0 relative bg-gray-600 rounded-lg shadow-md">
+            <div className="text-white text-xl mb-2">-Order # {repair?.orderNumber}</div>
+            <div className="text-white mb-1.5"><span>Customer:</span> {repair?.name}</div>
+            <div className="text-white mb-1.5"><span>Email:</span> {repair.email}</div>
+            <div className="text-white mb-1.5" ><span >Phone Number:</span> {repair?.phoneNumber}</div>
+            <div className="text-white mb-1.5"><span >Instrument: </span>{repair?.guitarType}</div>
 
             <ul>
               <li>
-                <strong className="text-white mb-1.5 text-xl">Services:</strong>
+                <span className="text-white mb-1.5 text-xl">Services:</span>
                 <p className="text-white mb-1.5">-{repair?.service?.service_name}</p>
               </li>
             </ul>
 
-            <div className="text-white mb-1.5"><strong className="text-xl">Drop off Date: </strong>{formattedDate}</div>
-            <div className="text-white mb-1.5 max-w-md overflow-x-auto"><strong className="text-xl">Additional Details: </strong>{repair?.additionalDetails}</div>
-            <div className="text-white mb-1.5"><strong className="text-xl">Service Price:</strong> ${repair?.service?.fee} </div>
-            {repair.isRushed ? <div className="text-red-600 mb-1.5">+$75 rush fee</div> : null}
-            {repair.isRushed ? <div className="text-white mb-1.5"><strong className="text-xl">TotalPrice:</strong> ${repair?.service?.fee + 75}</div> : null}
+            <div className="text-white mb-1.5"><span>Drop off Date: </span>{formattedDate}</div>
+            <div className="text-white mb-1.5 max-w-md overflow-x-auto"><span>Additional Details: </span>{repair?.additionalDetails}</div>
+            <div className="text-white mb-1.5"><span>Service Price:</span> ${repair?.service?.fee} </div>
+            {repair.isRushed ? <strong><div className="text-red-500 mb-1.5">+$75 rush fee</div></strong> : null}
+            {repair.isRushed ? <div className="text-white mb-1.5"><span>TotalPrice:</span> ${repair?.service?.fee + 75}</div> : null}
 
             <div className="text-white mb-1.5">
-              <strong className="1.5 text-xl">Repair Status: </strong>
+              <span className="1.5 text-xl">Repair Status: </span>
               {repair.isCompleted ? (
                 <span>
                   Ready for Pickup!
+                  <div className="text-white mb-2 mt-2">Message: {repair?.message}</div>
                   <div className="bg-blue-700 h-2 mt-4 mb-4 rounded-xl" style={{ width: "100%" }}></div>
                   <div className="text-white mb-1.5 mt-1.5">-Repaired by {repair?.completedBy}</div>
-                  <div className="text-white mb-2">Message: {repair?.message}</div>
                   {/* Fixed Progress Bar */}
                 </span>
               ) : (
@@ -137,9 +133,9 @@ export const AllRequestList = ({ currentUser }) => {
 
 
 
-            <div className="mt-5 mb-20">
+            <div className="mt-5 pb-5">
               <button className="bg-blue-700 hover:bg-blue-500 text-white px-4 py-2 rounded-lg mr-2" onClick={(event) => { navigate(`/repairrequest/${repair.id}`) }}>Make Changes</button>
-              <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Cancel</button>
+              <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg" onClick={(event) => handleCancelRepairRequest(repair.id)}>Remove</button>
             </div>
 
 
@@ -151,31 +147,9 @@ export const AllRequestList = ({ currentUser }) => {
   );
 };
 
-//  const randomNumberGenerator = () => {
-//     // Generate a random number between 100,000 and 999,999
-//     const min = 100000;
-//     const max = 999999;
-//     const randomOrderNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-
-//     return randomOrderNumber
-//   }
 
 
 
-
-// let totalPrice = 0
-
-// const reset = () => {
-//   totalPrice = 0
-// }
-
-// const calculatePrice = (serviceName) => {
-//   services.map((service) => {
-//     if (service?.service_name === serviceName) {
-//       totalPrice += service.fee
-//     }
-//   })
-// }
 
 
 

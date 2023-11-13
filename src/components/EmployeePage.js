@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { fetchAllRepairsServices } from "../services/AllServices"
 import { fetchAllServicesFromDatabase } from "../services/AllServices"
 import { fetchUsersById } from "../services/AllServices"
 import { editedRepairToDatabase } from "../services/AllServices"
+import { AiFillCloseSquare } from "react-icons/ai"
 
 
 
@@ -19,6 +20,10 @@ export const EmployeePage = ({ currentUser }) => {
   const [messages, setMessages] = useState({})
   const [updatedRepair, setUpdatedRepair] = useState(null)
 
+  const updatedRepairRef = useRef(null)
+
+
+
 
 
 
@@ -27,18 +32,33 @@ export const EmployeePage = ({ currentUser }) => {
   //rendering all repairs 
   useEffect(() => {
     fetchAllRepairsServices().then((repairsArray) => {
-      // Sort the repairs array so that rushed repairs appear at the top
-      const sortedRepairs = [...repairsArray].sort((a, b) => (b.isRushed ? 1 : -1));
+      // Sort the repairs array with the following priority:
+      // 1. Uncompleted and Rushed
+      // 2. Uncompleted and not Rushed
+      // 3. Completed and Rushed
+      // 4. Completed and not Rushed
+      const sortedRepairs = [...repairsArray].sort((a, b) => {
+        if (a.isCompleted !== b.isCompleted) {
+          // If one is completed and the other is not, prioritize uncompleted repairs
+          return a.isCompleted ? 1 : -1;
+        }
+  
+        // For uncompleted repairs, prioritize based on the isRushed property
+        if (!a.isCompleted && !b.isCompleted) {
+          return a.isRushed ? -1 : 1;
+        }
+  
+        // For completed repairs, prioritize based on the isCompleted property
+        return a.isCompleted ? 1 : 1;
+      });
+  
+      
       setAllRepairs(sortedRepairs);
+     
     });
-  }, []);
+  }, [updatedRepair]);
 
-  //rendering all servicess
-  // useEffect(() => {
-  //   fetchAllServicesFromDatabase().then((servicesArray) => {
-  //     setAllServices(servicesArray)
-  //   })
-  // }, [])
+
 
   //setting the current user (entire object)
   useEffect(() => {
@@ -47,7 +67,11 @@ export const EmployeePage = ({ currentUser }) => {
     })
   }, [currentUser.id])
 
-
+  const closePopup = (id) => {
+    // Implement the logic to close the popup by updating the state or variable that controls its visibility.
+    // For example, you can use state to toggle the visibility.
+    setShowTextArea({ ...showTextArea, [id]: false });
+  };
 
   function generateRandomOrderNumber() {
     // Generate a random number between 100,000 and 999,999
@@ -66,13 +90,6 @@ export const EmployeePage = ({ currentUser }) => {
     totalPrice = 0
   }
 
-  // const calculatePrice = (serviceName) => {
-  //   services.map((service) => {
-  //     if (service.service_name === serviceName) {
-  //       totalPrice += service.fee
-  //     }
-  //   })
-  // }
 
   const handleOnChange = (event, repair) => {
     const updatedRepair = {
@@ -94,7 +111,7 @@ export const EmployeePage = ({ currentUser }) => {
     }
 
 
-
+   
     editedRepairToDatabase(updatedRepair).then(() => {
       fetchAllRepairsServices().then((repairsArray) => {
         setAllRepairs(repairsArray)
@@ -103,7 +120,15 @@ export const EmployeePage = ({ currentUser }) => {
 
       })
     })
-  }
+
+  
+  
+
+  };
+
+
+  
+  
 
   const handleMessageButton = (event, repairId) => {
     setShowTextArea(prevState => ({
@@ -128,11 +153,13 @@ export const EmployeePage = ({ currentUser }) => {
         ...updatedRepair,
         message: message,
       }
+
       editedRepairToDatabase(updatedRepairCopy).then(() => {
-        setUpdatedRepair(updatedRepairCopy) // Update the updatedRepair state
+        setUpdatedRepair(updatedRepairCopy)
+    
       })
     }
-
+  
     window.alert("Message Sent")
 
     setMessages(prevState => ({
@@ -148,75 +175,98 @@ export const EmployeePage = ({ currentUser }) => {
 
   }
 
+
   return (
-    <section className=" bg-white bg-opacity-10 w-1/3 mb-4 mt-20 ml-40 max-h-[850px] overflow-y-auto pb-4 pl-10 pt-11 mr-40 custom-scrollbar rounded-lg custom-border">
-      {repairs.map((repair) => (
-        <div key={repair.id} className=" p-4 mb-4 ml-4" >
-          <div className=" text-white font-bold text-2xl mb-2">-Order # {reset()} {generateRandomOrderNumber()}</div>
-          <div className=" text-white text-lg font-semibold mb-2">Customer: {repair.name}</div>
-          <div className="text-white mb-1.5"><strong className="text-xl">Email:</strong> {repair.email}</div>
-          <div className="text-white mb-1.5"><strong className="text-xl">Phone Number:</strong> {repair.phoneNumber}</div>
-          <div className="text-white mb-1.5"><strong className="text-xl">Instrument:</strong> {repair.guitarType}</div>
-          <ul className="list-none pl-4 text-white mb-1.5">
-            <strong>Services:</strong>
+    <div>
+  <section className="section w-1/4 mb-4 mt-20 ml-40 max-h-[850px] overflow-y-auto pb-4 pl-10 pt-11 mr-40 custom-scrollbar rounded-lg custom-border">
+  {repairs.map((repair) => {
+    const dropoffDate = new Date(repair?.dropoffDate);
+    const formattedDate = dropoffDate.toLocaleDateString(undefined, { timeZone: 'UTC' });
 
+    return (
+      <div key={repair.id} className={`p-4 mb-4 ml-4 relative bg-gray-600 rounded-lg shadow-md ${repair.isCompleted ? 'transition-all duration-900 transform' : ''}`}>
+        <div className="text-white text-xl mb-2">- Order # {reset()} {repair.orderNumber}</div>
+        <div className="text-white  mb-2"><span>Customer: {repair.name}</span></div>
+        <div className="text-white mb-1.5"><span className="">Email:</span> {repair.email}</div>
+        <div className="text-white mb-1.5"><span className="">Phone Number:</span> {repair.phoneNumber}</div>
+        <div className="text-white mb-1.5"><span className="">Instrument:</span> {repair.guitarType}</div>
+        <div className="list-none pl-4 text-white mb-1.5">
+          <span>Services:</span>
+          <ul>
             <li className="text-white mb-1.5" key={repair?.service?.id}>- {repair?.service?.service_name}</li>
-
           </ul>
-          <div className="text-white mb-1.5"><strong className="text-xl">Drop off Date:</strong> {repair.dropoffDate}</div>
-          <div className="text-white mb-1.5"><strong className="text-xl">Additional Details:</strong> {repair.additionalDetails}</div>
-          <div className="text-white mb-1.5"><strong className="text-xl">Price: </strong>${repair?.service?.fee} </div>
-          {repair.isRushed ? <div className="text-red-600  mb-1.5">+$75 rush fee</div> : null}
-          {repair.isRushed ? <div className="text-white  mb-1.5"><strong className="text-xl">Total Price:</strong> ${repair?.service?.fee + 75}</div> : null}
-          <div className="pt-3 text-white">
-
-            <strong className="pr-2 text-white text-xl mb-1.5">Completed:</strong>
-
-            <label className="switch text-white mb-1.5">
-              <>
-                <input
-                  type="checkbox"
-                  checked={repair.isCompleted}
-                  onChange={(event) => { handleOnChange(event, repair) }}
-                />
-                <span className="slider round"></span>
-              </>
-            </label>
-            <div>
-              <button
-                className="bg-blue-600 hover-bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 mt-5"
-                onClick={(event) => handleMessageButton(event, repair.id)}
-              >
-                Message Customer
-              </button>
-              {showTextArea[repair.id] && (
-                <div>
-                  <div className="mt-5">
-                    <textarea
-                      className="w-64 h-40 p-2 ml-0 text-black border rounded"
-                      placeholder="Type your message here"
-                      onChange={(event) => handleMessageChange(event, repair.id)}
-                    />
-                  </div>
-                  <div className="mt-5">
-                    <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 rounded-lg mr-2"
-                      onClick={(event) => handleSendMessage(event, repair.id)}>
-                      Send Message
-                    </button>
-           
-            
-                  </div>
-                </div>
-              )}
-            </div>
+        </div>
+        <div className="text-white mb-1.5"><span className="">Drop off Date:</span> {formattedDate}</div>
+        <div className="text-white mb-1.5"><span className="">Additional Details:</span> {repair.additionalDetails}</div>
+        <div className="text-white mb-1.5"><span className="">Price:</span> ${repair?.service?.fee}</div>
+        {repair.isRushed && (
+          <div className="text-red-500 mb-1.5"><strong>+$75 rush fee</strong></div>
+        )}
+        {repair.isRushed && (
+          <div className="text-white mb-1.5"><span className="">Total Due:</span> ${repair?.service?.fee + 75}</div>
+        )}
+        <div className="pt-3 text-white">
+          <span className="pr-2 text-white  mb-1.5">Completed:</span>
+          <label className="switch text-white mb-1.5">
+            <input
+              type="checkbox"
+              checked={repair.isCompleted}
+              onChange={(event) => {
+                 handleOnChange(event, repair) 
+                //  handleMessageButton(event, repair.id)
+                }}
+            />
+            <span className="slider round"></span>
+          </label>
+          <div>
+            <button
+              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg mr-2 mt-5"
+              onClick={(event) => handleMessageButton(event, repair.id)}
+            >
+              Message Customer
+            </button>
           </div>
         </div>
-      ))}
-    </section>
-
-
-
-  )
+      </div>
+    );
+  })}
+</section>
+  
+      {/* Pop-up container */}
+      {repairs.map((repair) => (
+  <div key={`popup-${repair.id}`}>
+    {showTextArea[repair.id] && (
+      <div className="message-popup">
+        <button
+          className="absolute top-2 right-2 text-white bg-opacity-10 hover:text-gray-800"
+          onClick={() => closePopup(repair.id)}
+        >
+          <div className="text-2xl">
+            <AiFillCloseSquare />
+          </div>
+        </button>
+        <h1 className="text-3xl mb-9 pr-11 pl-11 logo text-white">Send Message</h1>
+        <div className="mb-6">
+          <textarea
+            className=" w-full h-40 p-2 ml-0 text-white border rounded bg-white bg-opacity-10"
+            placeholder="Type your message here"
+            onChange={(event) => handleMessageChange(event, repair.id)}
+          />
+        </div>
+        <div className="mb-6">
+          <button
+            className="w-full bg-red-700 hover:bg-red-500 bg-opacity-1 text-white p-3 rounded-md text-xl"
+            onClick={(event) => handleSendMessage(event, repair.id)}
+          >
+            Send Message
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+))}
+    </div>
+  );
 
 
 }

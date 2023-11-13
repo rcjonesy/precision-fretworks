@@ -14,9 +14,7 @@ body {
  
 }
 
-.logo {
 
-}
 .trash {
   color: rgb(237, 13, 13);
 
@@ -25,8 +23,9 @@ body {
 
 
 .trash:hover {
-  color: black;
-  transition: .5s;
+  color: rgb(234, 97, 97);
+  transition: .2s;
+  transform: scale(1.2)
 }
 
 /* body {
@@ -134,4 +133,86 @@ input:checked + .slider:before {
   border: 1px solid transparent; /* Add a transparent border */
   backdrop-filter: blur(50px); /* Adjust the blur strength as needed */
   border-radius: 8px; /* Adjust the border radius as needed */
+}
+
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.message-popup {
+  position: fixed;
+  top: 65%;
+  left:64%;
+  
+  transform: translate(-50%, -50%);
+  background-color: rgba(74, 85, 104, 0.8);
+  padding: 60px;
+  border-radius: 10px;
+  z-index: 1000;
+
+}
+
+.section {
+  background-color: black;
+}
+
+.popup-active .message-popup {
+  opacity: 1;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in.active {
+  opacity: 1;
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-duration: 300ms; /* Adjust the duration as needed */
+}
+
+.scale-0 {
+  transform: scale(0);
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+.completed-repair {
+  transition: transform 0.9s ease-in-out; /* Adjust the duration and easing as needed */
 }

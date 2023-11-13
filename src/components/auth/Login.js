@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserByEmail } from "../../services/userService";
 import { MainFooter } from "../MainFooter";
-import { BsInstagram } from 'react-icons/bs'
-import { BsFacebook } from 'react-icons/bs'
+
 
 
 
@@ -51,7 +50,7 @@ export const Login = () => {
     {/* </nav> */} 
   
     <main className="min-h-screen flex items-center justify-around">
-      <form className="bg-white bg-opacity-10 p-10 rounded-lg shadow-md w-96" onSubmit={handleLogin}>
+      <form className="bg-gray-800 p-10 rounded-lg shadow-md w-96" onSubmit={handleLogin}>
         <h1 className="text-5xl mb-9 logo">Welcome to Precision Fretworks</h1>
         <h2 className="text-2xl mb-6">Please sign in</h2>
         <div className="mb-6">
